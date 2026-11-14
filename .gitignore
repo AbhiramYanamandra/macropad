@@ -1,0 +1,4 @@
+.DS_Store
+boot_out.txt
+__pycache__/
+*.pyc
