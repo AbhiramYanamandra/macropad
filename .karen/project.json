@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "project_id": "macropad",
+  "integration_level": 2,
+  "karen_os_path": "~/Desktop/Personal_Projects/karen-os",
+  "karen_manifest_revision": "personal-first-1",
+  "project_instructions": "AGENTS.md",
+  "task_location": "plans"
+}
