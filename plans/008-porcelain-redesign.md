@@ -7,8 +7,10 @@
 > update this plan's row in `plans/README.md`.
 >
 > **Drift check (run first)**:
-> `git diff --stat 9099584..HEAD -- configurator/ design-mockups/ keymap.json config_loader.py`
-> must show only plan 009's changes (run 009 first), and `shasum -a 256 design-mockups/porcelain.html` must print
+> `git diff --stat 712a55f..HEAD -- configurator/ design-mockups/ keymap.json config_loader.py code.py`
+> must be empty apart from this plan's own slice commits. `712a55f` is the baseline after
+> the architecture approval: it already includes plan 009, the README tidy-up and the
+> archived `design-mockups/round-one/` image. `shasum -a 256 design-mockups/porcelain.html` must print
 > `8d0638106955c8cb16c39a4ddbca5654a3f03890f31adfe63d3e9b1f33d3e413`.
 > A different hash means the design changed after approval. That is a STOP condition.
 >
