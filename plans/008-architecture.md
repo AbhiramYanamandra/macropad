@@ -3,9 +3,9 @@
 | Approval field | Value |
 |---|---|
 | Proposal | Plan 008 Step 2 · revision 1 · 2026-11-22 |
-| Status | **PROPOSED — awaiting owner approval; Step 3 prohibited** |
-| Approved by / date | Pending / not recorded |
-| Approved SHA-256 | Pending; no approval is inferred from this document |
+| Status | **APPROVED as written, 2026-11-22. Step 3 (slice 1) may start.** |
+| Approved by / date | Owner, 2026-11-22: "approve the plan 008 as written" |
+| Approved SHA-256 | `85e347dd9d2c9995935f77da51504923c91516414dbcc5f68462d2d7499ce882`, the reviewed revision at commit `e3844ee` |
 | Visual baseline | `design-mockups/porcelain.html`, SHA-256 `8d0638106955c8cb16c39a4ddbca5654a3f03890f31adfe63d3e9b1f33d3e413` |
 | Contract baseline | `469014d` on `main`, including merged plan 009 |
 | Inventory | [008-inventory.md](008-inventory.md), revision 1; browser visual verification outstanding |
@@ -267,6 +267,10 @@ Approval decisions for the owner:
    the Mac. Recording is focused and opt-in; no global monitoring permission.
 4. Optional v1-compatible metadata and still fallbacks; native animation and
    live USB features remain separately verified later slices.
+
+## Approval note
+
+Approved without changes, including macOS 13 as the proposed minimum. Toolchain check on 2026-11-22: macOS 26.6, Xcode 27.0, Swift 6.4 are installed, so the "confirm target Mac and toolchain" prerequisite is met. Approval does not cover spending, certificates, distribution or plan 007.
 
 ## Execution record and stop
 
