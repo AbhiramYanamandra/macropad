@@ -8,7 +8,7 @@
 >
 > **Drift check (run first)**:
 > `git diff --stat 9099584..HEAD -- configurator/ design-mockups/ keymap.json config_loader.py`
-> must be empty, and `shasum -a 256 design-mockups/porcelain.html` must print
+> must show only plan 009's changes (run 009 first), and `shasum -a 256 design-mockups/porcelain.html` must print
 > `8d0638106955c8cb16c39a4ddbca5654a3f03890f31adfe63d3e9b1f33d3e413`.
 > A different hash means the design changed after approval. That is a STOP condition.
 >
@@ -20,7 +20,7 @@
 - **Priority**: P1
 - **Effort**: L, split into slices. Steps 1 and 2 are S.
 - **Risk**: MEDIUM. A new app that writes to the `CIRCUITPY` drive can break the pad's configuration.
-- **Depends on**: none for Steps 1 and 2. Device checks in 003 to 006 are recommended before Step 5.
+- **Depends on**: plan 009 (layer switching without the knob, and the `knob` setting). Device checks in 003 to 006 are recommended before Step 5.
 - **Category**: direction
 - **Planned at**: commit `9099584`, 2026-11-22
 - **KAREN OS**: first engineering pilot for KAREN OS (Phase 3). Record how much coordination it needed.
@@ -63,7 +63,7 @@ The knob is a future plan, not a hardware change. The PCB already has routed hea
 
 - The app shows the knob as "not fitted" and keeps its settings available, so fitting it later needs no app redesign.
 - `keymap.json` and `config_loader.py` already support `encoder` actions. Keep that support.
-- **Known gap, found 2026-11-22:** every layer's only layer-switch action is `encoder.press`. With no knob fitted, the pad cannot leave layer 0 (Media). The owner decides the replacement, for example a combo or a hold action. Until then, Step 5 device checks can only test layer 0. Record the decision in the inventory.
+- **Layer switching without the knob:** plan 009 adds a `knob` setting to `keymap.json` and makes keys 7 + 9 cycle to the next layer when the knob is not fitted (owner decision, 2026-11-22). The inventory and the app must use that setting for the "Knob · not fitted" row.
 
 ## Scope
 
