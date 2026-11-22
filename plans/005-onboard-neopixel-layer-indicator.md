@@ -6,7 +6,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py layer_led.py lib/`
+> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py layer_led.py lib/`
 > `code.py` will have changed from plans 002–004. Confirm it contains
 > `MEDIA, CODE, MEET = 0, 1, 2` and a line `kbd.modules = [layers, macros, encoder_handler]`.
 > `layer_led.py` must not exist yet. Any other mismatch is a STOP condition.
@@ -48,8 +48,8 @@ Red for the meeting layer also works as a "you're in call mode" cue.
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Library present | `ls /Users/ysabhiram/Desktop/rp2040/lib/neopixel.mpy` | file exists |
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/code.py /Users/ysabhiram/Desktop/rp2040/layer_led.py` | exit 0 |
+| Library present | `ls /Users/ysabhiram/Desktop/Personal_Projects/rp2040/lib/neopixel.mpy` | file exists |
+| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py /Users/ysabhiram/Desktop/Personal_Projects/rp2040/layer_led.py` | exit 0 |
 | Pin names (human, on device REPL) | in `screen /dev/tty.usbmodem* 115200`, press Ctrl-C then Enter, then type `import board; print(board.NEOPIXEL, board.NEOPIXEL_POWER)` | prints two pin objects, no `AttributeError`; press Ctrl-D to reboot afterwards |
 
 ## Scope
@@ -73,9 +73,9 @@ Red for the meeting layer also works as a "you're in call mode" cue.
 
 The executor must not download files. Ask the user to:
 1. Download the **Adafruit CircuitPython Library Bundle for version 10.x** from https://circuitpython.org/libraries.
-2. Copy `lib/neopixel.mpy` from the unzipped bundle into `/Users/ysabhiram/Desktop/rp2040/lib/`.
+2. Copy `lib/neopixel.mpy` from the unzipped bundle into `/Users/ysabhiram/Desktop/Personal_Projects/rp2040/lib/`.
 
-**Verify**: `ls -l /Users/ysabhiram/Desktop/rp2040/lib/neopixel.mpy` → file exists and is larger than 1 KB. If it doesn't exist, STOP and wait for the user.
+**Verify**: `ls -l /Users/ysabhiram/Desktop/Personal_Projects/rp2040/lib/neopixel.mpy` → file exists and is larger than 1 KB. If it doesn't exist, STOP and wait for the user.
 
 ### Step 2: Create `layer_led.py`
 
@@ -133,7 +133,7 @@ class LayerLed(Module):
             self._power.deinit()
 ```
 
-**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/layer_led.py` → exit 0
+**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/layer_led.py` → exit 0
 
 ### Step 3: Wire it into `code.py`
 

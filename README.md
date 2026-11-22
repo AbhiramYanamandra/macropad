@@ -23,7 +23,7 @@ Safari and Firefox can't write to the drive. Use **Download keymap.json** and co
 Copy these onto the `CIRCUITPY` drive (keep the existing `kmk/` and `lib/`):
 
 ```bash
-rsync -av --exclude '.git' --exclude 'plans' --exclude 'configurator' --exclude '__pycache__' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' /Users/ysabhiram/Desktop/rp2040/ /Volumes/CIRCUITPY/
+rsync -av --exclude '.git' --exclude 'plans' --exclude 'configurator' --exclude '__pycache__' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' /Users/ysabhiram/Desktop/Personal_Projects/rp2040/ /Volumes/CIRCUITPY/
 ```
 
 Never add `--delete`. For the LED, also copy `neopixel.mpy` from the

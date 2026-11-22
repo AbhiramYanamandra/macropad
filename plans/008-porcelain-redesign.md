@@ -12,9 +12,8 @@
 > `8d0638106955c8cb16c39a4ddbca5654a3f03890f31adfe63d3e9b1f33d3e413`.
 > A different hash means the design changed after approval. That is a STOP condition.
 >
-> All paths in this plan are relative to the repository root. Plans 001 to 007
-> use absolute paths under `/Users/ysabhiram/Desktop/rp2040`, which no longer
-> exists; the repository now lives at `~/Desktop/Personal_Projects/rp2040`.
+> All paths in this plan are relative to the repository root, which is
+> `~/Desktop/Personal_Projects/rp2040`.
 
 ## Status
 
@@ -58,6 +57,14 @@ The browser app also has limits Porcelain removes. It needs Chrome or Edge to wr
 - `macropad_display.py` and `layer_led.py`: the OLED and LED behaviour that the Display section configures.
 - The firmware's display support is 1-bit images on a 128×32 SSD1306. Porcelain's animation editor implies a frame format the firmware does not support yet.
 
+## The knob
+
+The knob is a future plan, not a hardware change. The PCB already has routed headers for a rotary encoder (pins D10, D7 and D6, see `README.md`). The knob is left out of the enclosure until its design looks right. Porcelain's "Knob · not fitted" is therefore the correct current state.
+
+- The app shows the knob as "not fitted" and keeps its settings available, so fitting it later needs no app redesign.
+- `keymap.json` and `config_loader.py` already support `encoder` actions. Keep that support.
+- **Known gap, found 2026-11-22:** every layer's only layer-switch action is `encoder.press`. With no knob fitted, the pad cannot leave layer 0 (Media). The owner decides the replacement, for example a combo or a hold action. Until then, Step 5 device checks can only test layer 0. Record the decision in the inventory.
+
 ## Scope
 
 **In scope**:
@@ -68,8 +75,8 @@ The browser app also has limits Porcelain removes. It needs Chrome or Edge to wr
 **Out of scope** until separately approved:
 - Deleting or replacing `configurator/`. It stays the working tool until the new app covers everything it does.
 - Code signing, notarisation, distribution or an App Store listing.
-- Hardware changes, including removing the knob. "Knob · not fitted" and "mk2" need the owner's confirmation first.
-- Plan 007 (hiding the drive). It would block the app from writing `keymap.json`, so it has to be designed together with Sync to pad.
+- Hardware and enclosure changes, including fitting the knob. That is a separate future plan.
+- Plan 007 (hiding the drive). It would block the app from writing `keymap.json`. The owner decided on 2026-11-22 that 007 waits until this plan's Sync to pad design is settled.
 
 ## Git workflow
 
@@ -143,7 +150,8 @@ Repeat Steps 3 to 5 for each later slice in the approved order. Each slice is it
 ## STOP conditions
 
 - `porcelain.html` no longer matches the approved hash.
-- The proposal needs a hardware change, or depends on "Knob · not fitted" or "mk2", before the owner confirms them.
+- The proposal needs a hardware or enclosure change, or assumes the knob is fitted.
+- The proposal depends on the "Macropad mk2" name meaning anything beyond a label, before the owner confirms it.
 - A `keymap.json` change would stop the current firmware from loading existing files.
 - Writing to `CIRCUITPY` fails or corrupts `keymap.json` in testing. Restore from Git and report.
 - Anything would need signing certificates, paid developer accounts or other spending.

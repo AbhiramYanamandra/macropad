@@ -6,7 +6,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py macropad_display.py lib/`
+> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py macropad_display.py lib/`
 > `code.py` will have changed from plans 002/003. Confirm it contains
 > `LAYER_NAMES = ("MEDIA", "CODE", "MEET")` and the Display block quoted below.
 > `macropad_display.py` must not exist yet. Any other mismatch is a STOP condition.
@@ -67,8 +67,8 @@ kbd.extensions.append(display_ext)
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/code.py /Users/ysabhiram/Desktop/rp2040/macropad_display.py` | exit 0 |
-| Images present | `ls /Users/ysabhiram/Desktop/rp2040/lib/*.bmp` | lists `goku.bmp`, `manandmountain.bmp`, `turbulence.bmp` |
+| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py /Users/ysabhiram/Desktop/Personal_Projects/rp2040/macropad_display.py` | exit 0 |
+| Images present | `ls /Users/ysabhiram/Desktop/Personal_Projects/rp2040/lib/*.bmp` | lists `goku.bmp`, `manandmountain.bmp`, `turbulence.bmp` |
 | On-device (human) | deploy per `README.md` `## Deploy` | Step 4 checklist passes |
 
 ## Scope
@@ -113,7 +113,7 @@ class LayerDisplay(Display):
         super().render(layer)
 ```
 
-**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/macropad_display.py` → exit 0
+**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/macropad_display.py` → exit 0
 
 ### Step 2: Move the layer constants above the Display block
 

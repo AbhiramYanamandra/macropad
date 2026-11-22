@@ -6,7 +6,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py`
+> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py`
 > If plan 002 has landed, `code.py` will show as changed. That's expected:
 > check that it matches the "Current state" excerpt below (the post-002
 > layout). Any other mismatch is a STOP condition.
@@ -30,7 +30,7 @@ layers. Plans 004–006 build on the layer list and the `LAYER_NAMES` constant t
 
 ## Current state
 
-`/Users/ysabhiram/Desktop/rp2040/code.py` after plan 002 (relevant parts):
+`/Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` after plan 002 (relevant parts):
 
 ```python
 from kmk.modules.layers import Layers
@@ -73,7 +73,7 @@ KMK facts this plan depends on (verified in the vendored source):
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/code.py` | exit 0 |
+| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` | exit 0 |
 | Shape check | the Python snippet in Step 3 | prints `OK 3 layers` |
 | On-device (human) | deploy per `README.md` `## Deploy`, then `screen /dev/tty.usbmodem* 115200` | no `Traceback`; checklist in Step 4 passes |
 
@@ -104,7 +104,7 @@ MEDIA, CODE, MEET = 0, 1, 2
 LAYER_NAMES = ("MEDIA", "CODE", "MEET")
 ```
 
-**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/code.py` → exit 0
+**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` → exit 0
 
 ### Step 2: Replace the keymap and encoder map
 
@@ -145,11 +145,11 @@ encoder_handler.map = [
 
 Note for the user (copy into the commit message body): system mute moved from the encoder button to MEDIA position 5 (the key that used to type `6`), because the encoder button now cycles layers.
 
-**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/rp2040/code.py` → exit 0
+**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` → exit 0
 
 ### Step 3: Host-side shape check
 
-Run this from `/Users/ysabhiram/Desktop/rp2040`. It parses `code.py` without importing it (on the Mac, `import board` would fail):
+Run this from `/Users/ysabhiram/Desktop/Personal_Projects/rp2040`. It parses `code.py` without importing it (on the Mac, `import board` would fail):
 
 ```bash
 python3 - <<'EOF'

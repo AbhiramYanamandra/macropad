@@ -23,7 +23,7 @@ on the Mac, plus a human checklist on the device. Plans can be marked
 | [004](004-per-layer-oled-art.md) | Per-layer OLED image + wake screen on layer change | P2 | S | 003 | DONE (device check pending): `macropad_display.py` `LayerDisplay` |
 | [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | DONE (device check pending; `lib/neopixel.mpy` still needed): `layer_led.py` |
 | [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz |
-| [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | TODO |
+| [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | BLOCKED: waits for plan 008's Sync to pad design, because hiding the drive stops the app writing `keymap.json` |
 | [008](008-porcelain-redesign.md) | Rebuild Macropad Studio as the approved Porcelain native Mac app (architecture proposal first, then slices) | P1 | L | none for Steps 1-2; approval gate after Step 2 | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED (with a one-line reason) | REJECTED (with a one-line reason)
@@ -44,6 +44,8 @@ Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED
 - 007 goes last, because it hides the `CIRCUITPY` drive. Every other plan's on-device checks are easier while the drive is visible.
 
 ## Idea not planned (from the advisor report)
+
+- Fitting the knob. The PCB already has routed encoder headers (D10, D7, D6) and the firmware supports `encoder` actions; what is missing is an enclosure design that looks right. Until then the knob is "not fitted", and layer switching needs a non-knob action (see plan 008, "The knob").
 
 - Extra inputs over I2C (a seesaw rotary encoder via KMK's `I2CEncoder`, or a second OLED). All 11 GPIO pins are taken, so this needs new hardware. Revisit once the user picks a part.
 - Per-app automatic layer switching through a script on the computer talking over USB serial (`bootcfg(cdc_data=True)`). This is large and would conflict with plan 007's serial changes unless designed together, so it needs a trial run first.
