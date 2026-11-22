@@ -122,6 +122,7 @@ struct MacroStepEditor: View {
     private func field(_ name:String,default fallback:String = "") -> Binding<String> {
         Binding(get:{ step.object[name]?.string ?? fallback },set:{ text in var fields = step.object; fields[name] = .string(text); step = .object(fields) })
     }
+    var delayText: String { step["ms"].number.map { String(format:"%.0f",$0) } ?? "100" }
     var body: some View {
         VStack(alignment:.leading,spacing:8) {
             HStack {
@@ -135,7 +136,7 @@ struct MacroStepEditor: View {
                 keyPicker("Key",value:field("key",default:"A"),names:Keymap.keyNames)
                 ModifierPicker(selected:Binding(get:{ step["mods"].array.map(\.string) },set:{ values in var fields = step.object; fields["mods"] = .array(values.map(JSON.string)); step = .object(fields) }))
             } else if step["do"].string == "delay" {
-                TextField("Milliseconds",text:Binding(get:{ step["ms"].number.map { String(Int($0)) } ?? "100" },set:{ value in var fields=step.object; fields["ms"] = Double(value).map(JSON.number) ?? .string(value); step = .object(fields) })).textFieldStyle(.roundedBorder)
+                TextField("Milliseconds",text:Binding(get:{ delayText },set:{ value in var fields=step.object; fields["ms"] = Double(value).map(JSON.number) ?? .string(value); step = .object(fields) })).textFieldStyle(.roundedBorder)
             } else { TextField("Text",text:field("text")).textFieldStyle(.roundedBorder) }
         }.padding(10).background(Porcelain.inset,in:RoundedRectangle(cornerRadius:10))
             .onChange(of:step["do"]) { value in

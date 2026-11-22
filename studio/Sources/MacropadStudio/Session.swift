@@ -3,7 +3,7 @@ import SwiftUI
 import StudioCore
 
 @MainActor final class Session: ObservableObject {
-    enum State: String { case empty, ready, dirty, invalid, conflict, syncing, saved, disconnected, unknown }
+    enum State: String { case empty, opening, ready, dirty, invalid, conflict, syncing, saved, disconnected, unknown }
     @Published var draft: Keymap?
     @Published var snapshot: PadSnapshot?
     @Published var state: State = .empty
@@ -13,7 +13,6 @@ import StudioCore
     @Published var destination = "Keys"
     @Published var editing = false
     @Published var history: [Keymap] = []
-    @Published var futureNotice = false
     let store: PadStore
     let recovery: URL
     var dirty: Bool { draft != snapshot?.keymap }
@@ -31,13 +30,14 @@ import StudioCore
         return alert.runModal() == .alertSecondButtonReturn
     }
     func chooseFolder() {
-        guard state != .syncing, confirmDiscard() else { return }
+        guard state != .syncing, state != .opening, confirmDiscard() else { return }
         let panel = NSOpenPanel(); panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.allowsMultipleSelection = false
         panel.message = "Choose the CIRCUITPY folder containing your macropad firmware and keymap.json."
         guard panel.runModal() == .OK, let url = panel.url else { return }
         Task { await open(url) }
     }
     func open(_ url: URL) async {
+        state = .opening; message = "Opening and validating the selected pad…"
         do {
             let opened = try await store.open(url)
             snapshot = opened; draft = opened.keymap; history = []; selectedLayer = 0; selectedKey = 0; editing = false
@@ -47,7 +47,10 @@ import StudioCore
     func persistDraft() throws {
         guard let draft else { return }
         try FileManager.default.createDirectory(at: recovery, withIntermediateDirectories: true)
-        try draft.encoded().write(to: recovery.appendingPathComponent("working-draft.json"), options: .atomic)
+        let data = try draft.encoded()
+        let context: JSON = .object(["version":.number(1), "volume":.string(snapshot?.identity ?? ""), "baseline":.string(snapshot?.fingerprint ?? ""), "draft":.string(digest(data))])
+        try data.write(to: recovery.appendingPathComponent("working-draft.json"), options: .atomic)
+        try context.encoded().write(to: recovery.appendingPathComponent("working-draft-context.json"), options: .atomic)
     }
     func apply(_ action: JSON) throws {
         guard var next = draft else { return }
@@ -79,8 +82,10 @@ import StudioCore
         }
     }
     func checkConnection() async {
-        guard let snapshot, state != .syncing, state != .invalid else { return }
-        if !(await store.isPresent(snapshot)) { state = .disconnected; message = "Pad disconnected. Your draft is retained. Reconnect and inspect before syncing." }
+        guard let snapshot, state != .syncing, state != .opening, state != .invalid else { return }
+        let present = await store.isPresent(snapshot)
+        guard self.snapshot?.identity == snapshot.identity, state != .opening, state != .syncing else { return }
+        if !present { state = .disconnected; message = "Pad disconnected. Your draft is retained. Reconnect and inspect before syncing." }
     }
     func inspectReconnect() {
         guard let old = snapshot, let map = draft else { return }
@@ -107,7 +112,11 @@ import StudioCore
     func recoverDraft() {
         guard state != .syncing, let current = draft else { return }
         do {
-            let recovered = try Keymap(data: Data(contentsOf: recovery.appendingPathComponent("working-draft.json")))
+            let data = try Data(contentsOf: recovery.appendingPathComponent("working-draft.json"))
+            let context = try JSONDecoder().decode(JSON.self, from: Data(contentsOf: recovery.appendingPathComponent("working-draft-context.json")))
+            guard context["version"].number == 1, context["volume"].string == snapshot?.identity, context["draft"].string == digest(data) else { throw StudioError("This local draft belongs to another pad or could not be verified. The current layout was not changed.") }
+            let recovered = try Keymap(data: data)
+            guard context["baseline"].string == snapshot?.fingerprint || recovered == current else { throw StudioError("The pad layout changed since this draft was saved. Inspect the draft before restoring it.") }
             guard recovered.layers.count == current.layers.count else { throw StudioError("The recovered draft has a different layer count. Open it in a mock folder for inspection first.") }
             history.append(current); draft = recovered; selectedLayer = 0; selectedKey = 0; editing = false
             if [.ready, .dirty, .saved].contains(state) { state = .dirty }; message = "Recovered the local draft. Review it before syncing."

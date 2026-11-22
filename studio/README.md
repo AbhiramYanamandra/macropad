@@ -26,7 +26,8 @@ Sync creates a prior-file backup, candidate and receipt in
 `~/Library/Application Support/Macropad Studio/Recovery/<transaction-id>/`.
 Applied edits are also retained in `working-draft.json`. To recover after
 relaunching, open the same pad folder and choose **Settings → Recover locally
-saved draft**; inspect it before syncing. Unapplied inspector edits are not
+saved draft**; inspect it before syncing. Recovery verifies the selected pad,
+the draft digest and the original layout fingerprint before applying it. Unapplied inspector edits are not
 saved. A conflict blocks writes. **Inspect reconnected pad** compares the
 actual file with the original and draft, without replaying a write.
 

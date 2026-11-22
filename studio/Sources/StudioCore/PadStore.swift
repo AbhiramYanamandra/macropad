@@ -39,8 +39,10 @@ public struct LocalPadFiles: PadFiles {
     public func identity(_ root: URL) throws -> String {
         let attrs = try FileManager.default.attributesOfItem(atPath: root.path)
         guard attrs[.type] as? FileAttributeType == .typeDirectory else { throw StudioError("The selected folder is unavailable.") }
-        let volume = try root.resourceValues(forKeys: [.volumeUUIDStringKey]).volumeUUIDString ?? "local"
-        return "\(volume):\(attrs[.systemNumber] ?? "?"):\(attrs[.systemFileNumber] ?? "?")"
+        if let volume = try root.resourceValues(forKeys: [.volumeUUIDStringKey]).volumeUUIDString {
+            return "\(volume):\(attrs[.systemFileNumber] ?? "?")"
+        }
+        return "local:\(attrs[.systemNumber] ?? "?"):\(attrs[.systemFileNumber] ?? "?")"
     }
     public func preflight(_ root: URL, bytes: Int) throws {
         guard FileManager.default.isWritableFile(atPath: root.path) else { throw StudioError("The selected pad is read-only.") }
@@ -88,11 +90,14 @@ public actor PadStore {
         let bytes = try files.read(Self.safeChild(root, path: "keymap.json"))
         guard bytes.count <= 1_048_576 else { throw StudioError("Keymap is too large.") }
         let map = try Keymap(data: bytes)
+        try validateAssets(map, at: root)
+        return PadSnapshot(root: root, identity: identity, bytes: bytes, keymap: map)
+    }
+    private func validateAssets(_ map: Keymap, at root: URL) throws {
         for layer in map.layers where layer["image"] != .null {
             let image = try files.read(Self.safeChild(root, path: layer["image"].string))
             try Self.validateBMP(image)
         }
-        return PadSnapshot(root: root, identity: identity, bytes: bytes, keymap: map)
     }
     public static func validateBMP(_ data: Data) throws {
         let b = [UInt8](data)
@@ -100,16 +105,18 @@ public actor PadStore {
         guard b.count >= 62, b[0] == 66, b[1] == 77,
               word(14) >= 40, word(18) == 128, (word(22) == 32 || word(22) == UInt32(bitPattern: -32)),
               b[26] == 1, b[27] == 0, b[28] == 1, b[29] == 0, word(30) == 0,
-              Int(word(10)) >= 62, Int(word(10)) <= b.count - 512 else { throw StudioError("Layer images must be uncompressed 128×32 one-bit BMPs.") }
+              Int(word(10)) >= 62, Int(word(14)) + 22 <= Int(word(10)), Int(word(10)) <= b.count - 512 else { throw StudioError("Layer images must be uncompressed 128×32 one-bit BMPs.") }
     }
     public func isPresent(_ snapshot: PadSnapshot) -> Bool { (try? files.identity(snapshot.root)) == snapshot.identity }
     public func sync(_ map: Keymap, from snapshot: PadSnapshot) throws -> PadSnapshot {
         let data = try map.encoded()
+        guard data.count <= 1_048_576 else { throw StudioError("The draft is too large to sync.") }
         var replacementStarted = false
         do {
             try checkpoint(.preflight)
             let current = try open(snapshot.root)
             guard current.identity == snapshot.identity else { throw StudioError("The selected volume changed.") }
+            try validateAssets(map, at: snapshot.root)
             // A reconnect after a completed write needs no duplicate replacement.
             if current.bytes == data { return current }
             guard current.bytes == snapshot.bytes else { throw StudioError("The keymap changed outside Studio. Reopen it before syncing.") }

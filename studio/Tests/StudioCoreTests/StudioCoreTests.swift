@@ -172,6 +172,30 @@ final class StudioCoreTests: XCTestCase {
         _=try await store.sync(next,from:old)
         XCTAssertEqual(files.replacementCount,1)
     }
+    func testCandidateMissingAssetNeverReplacesConfig() async throws {
+        let pad=try mockPad(), store=store()
+        let old=try await store.open(pad)
+        let data=try altered(old.bytes) { root in
+            var layers=root["layers"]!.array, first=layers[0].object
+            first["image"] = .string("lib/missing.bmp"); layers[0] = .object(first); root["layers"] = .array(layers)
+        }
+        let candidate=try Keymap(data:data)
+        do { _=try await store.sync(candidate,from:old); XCTFail("Missing candidate asset must be rejected") } catch {}
+        XCTAssertEqual(try Data(contentsOf:pad.appendingPathComponent("keymap.json")),old.bytes)
+    }
+    func testOversizedDraftNeverReplacesConfig() async throws {
+        let pad=try mockPad(), store=store()
+        let old=try await store.open(pad)
+        var map=old.keymap
+        try map.setPressed(.object(["type":.string("text"),"text":.string(String(repeating:"x",count:1_048_576))]),layer:0,key:0)
+        do { _=try await store.sync(map,from:old); XCTFail("Oversized candidate must be rejected") } catch {}
+        XCTAssertEqual(try Data(contentsOf:pad.appendingPathComponent("keymap.json")),old.bytes)
+    }
+    func testMalformedBitmapPaletteRejectedAtOpenBoundary() throws {
+        var bytes=try Data(contentsOf:repo.appendingPathComponent("lib/goku.bmp"))
+        bytes.replaceSubrange(14..<18,with:[255,255,255,255])
+        XCTAssertThrowsError(try PadStore.validateBMP(bytes))
+    }
     func testUnsafePathsAndSymlinksRejected() throws {
         for path in ["../secret","/tmp/file","lib/../../file","lib//file","lib/./x","lib\\x"] { XCTAssertThrowsError(try Keymap.validateRelativePath(path)) }
         let pad=try mockPad()

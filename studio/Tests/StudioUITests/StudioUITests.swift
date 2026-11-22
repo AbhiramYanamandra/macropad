@@ -37,6 +37,32 @@ private let repo=URL(fileURLWithPath:#filePath).deletingLastPathComponent().dele
         XCTAssertEqual(session.draft,draft)
         XCTAssertFalse(session.canSync)
     }
+    func testRecoveryIsBoundToTheSelectedPadAndOriginalLayout() async throws {
+        let local=FileManager.default.temporaryDirectory.appendingPathComponent("StudioRecovery-"+UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at:local) }
+        let session=Session(recovery:local)
+        await session.open(repo)
+        let original=try XCTUnwrap(session.draft)
+        try session.apply(.object(["type":.string("text"),"text":.string("Recovered")]))
+        let expected=session.draft
+        await session.open(repo)
+        session.recoverDraft()
+        XCTAssertEqual(session.draft,expected)
+        let other=local.appendingPathComponent("OtherPad")
+        try FileManager.default.createDirectory(at:other.appendingPathComponent("lib"),withIntermediateDirectories:true)
+        for name in ["code.py","config_loader.py","keymap.json","lib/goku.bmp","lib/manandmountain.bmp","lib/turbulence.bmp"] {
+            try FileManager.default.copyItem(at:repo.appendingPathComponent(name),to:other.appendingPathComponent(name))
+        }
+        await session.open(other)
+        session.recoverDraft()
+        XCTAssertEqual(session.draft,original)
+        XCTAssertTrue(session.message.contains("another pad"))
+    }
+    func testLargeDelayTextDoesNotNarrowToMachineInteger() {
+        let step:JSON = .object(["do":.string("delay"),"ms":.number(1e30)])
+        let editor=MacroStepEditor(step:.constant(step),index:0,remove:{})
+        XCTAssertEqual(Double(editor.delayText),1e30)
+    }
     func testRenderNativeWindowAndDevicePreview() async throws {
         guard let directory=ProcessInfo.processInfo.environment["STUDIO_SCREENSHOT_DIR"] else { return }
         let local=FileManager.default.temporaryDirectory.appendingPathComponent("StudioRender-"+UUID().uuidString)

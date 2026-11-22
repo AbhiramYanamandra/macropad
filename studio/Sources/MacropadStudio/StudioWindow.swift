@@ -71,6 +71,7 @@ struct StudioWindow: View {
                 if [.unknown,.disconnected,.conflict].contains(session.state) { Button("Inspect reconnected pad") { session.inspectReconnect() } }
             }.font(.system(size: 12)).foregroundStyle(Porcelain.muted).padding(.horizontal,20).frame(minHeight: 42).background(Porcelain.surface)
         }.background(Porcelain.background).foregroundStyle(Porcelain.ink).tint(Porcelain.accent)
+            .disabled(session.state == .opening)
     }
     private var rail: some View {
         VStack(spacing: 8) {
