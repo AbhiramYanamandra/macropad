@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "settings": {
+    "hold_ms": 220,
+    "combo_timeout": 80,
+    "toast_ms": 1200,
+    "led_brightness": 0.05,
+    "dim_s": 20,
+    "off_s": 60
+  },
+  "layers": [
+    {
+      "name": "MEDIA",
+      "image": "lib/manandmountain.bmp",
+      "color": "#0050ff",
+      "keys": [
+        {
+          "type": "key",
+          "key": "MPRV",
+          "label": "PREV"
+        },
+        {
+          "type": "key",
+          "key": "MPLY",
+          "label": "PLAY",
+          "hold": {
+            "type": "key",
+            "key": "MUTE",
+            "label": "MUTE"
+          }
+        },
+        {
+          "type": "key",
+          "key": "MNXT",
+          "label": "NEXT"
+        },
+        {
+          "type": "key",
+          "key": "C",
+          "label": "COPY",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "V",
+          "label": "PASTE",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "MUTE",
+          "label": "MUTE"
+        },
+        {
+          "type": "key",
+          "key": "N4",
+          "label": "SNIP",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "UP",
+          "label": "MISSION",
+          "mods": [
+            "LCTL"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "SPC",
+          "label": "SEARCH",
+          "mods": [
+            "LCMD"
+          ]
+        }
+      ],
+      "encoder": {
+        "ccw": {
+          "type": "key",
+          "key": "VOLD",
+          "label": "VOL-"
+        },
+        "cw": {
+          "type": "key",
+          "key": "VOLU",
+          "label": "VOL+"
+        },
+        "press": {
+          "type": "layer",
+          "mode": "to",
+          "layer": "next",
+          "label": "NEXT LYR"
+        }
+      }
+    },
+    {
+      "name": "CODE",
+      "image": "lib/goku.bmp",
+      "color": "#00ff40",
+      "keys": [
+        {
+          "type": "key",
+          "key": "P",
+          "label": "OPEN",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "P",
+          "label": "CMDS",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "SLSH",
+          "label": "COMMENT",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "B",
+          "label": "SIDEBAR",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "GRV",
+          "label": "TERM",
+          "mods": [
+            "LCTL"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "S",
+          "label": "SAVE",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "F5",
+          "label": "DEBUG"
+        },
+        {
+          "type": "key",
+          "key": "F",
+          "label": "FIND ALL",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "Z",
+          "label": "REDO",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        }
+      ],
+      "encoder": {
+        "ccw": {
+          "type": "key",
+          "key": "MINS",
+          "label": "ZOOM-",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        "cw": {
+          "type": "key",
+          "key": "EQL",
+          "label": "ZOOM+",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        "press": {
+          "type": "layer",
+          "mode": "to",
+          "layer": "next",
+          "label": "NEXT LYR"
+        }
+      }
+    },
+    {
+      "name": "MEET",
+      "image": "lib/turbulence.bmp",
+      "color": "#ff2020",
+      "keys": [
+        {
+          "type": "key",
+          "key": "A",
+          "label": "MUTE",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "V",
+          "label": "VIDEO",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "S",
+          "label": "SHARE",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "Y",
+          "label": "HAND",
+          "mods": [
+            "LALT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "H",
+          "label": "CHAT",
+          "mods": [
+            "LCMD",
+            "LSFT"
+          ]
+        },
+        {
+          "type": "key",
+          "key": "W",
+          "label": "CLOSE",
+          "mods": [
+            "LCMD"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Be right back",
+          "label": "BRB"
+        },
+        {
+          "type": "text",
+          "text": "Sounds good",
+          "label": "OK"
+        },
+        {
+          "type": "key",
+          "key": "ESC",
+          "label": "ESC"
+        }
+      ],
+      "encoder": {
+        "ccw": {
+          "type": "key",
+          "key": "VOLD",
+          "label": "VOL-"
+        },
+        "cw": {
+          "type": "key",
+          "key": "VOLU",
+          "label": "VOL+"
+        },
+        "press": {
+          "type": "layer",
+          "mode": "to",
+          "layer": "next",
+          "label": "NEXT LYR"
+        }
+      }
+    }
+  ],
+  "combos": [
+    {
+      "keys": [
+        0,
+        2
+      ],
+      "action": {
+        "type": "macro",
+        "label": "LOCK",
+        "steps": [
+          {
+            "do": "tap",
+            "key": "Q",
+            "mods": [
+              "LCTL",
+              "LCMD"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

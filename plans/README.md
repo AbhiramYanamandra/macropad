@@ -17,15 +17,21 @@ on the Mac, plus a human checklist on the device. Plans can be marked
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
-| [001](001-version-control-and-kmk-patch-record.md) | Git repo, README, record the local KMK patch | P1 | S | — | TODO |
-| [002](002-tidy-code-py.md) | Tidy `code.py` (dead import, layout, debug switch) | P3 | S | 001 | TODO |
-| [003](003-real-keymap-with-layers-and-macros.md) | Three-layer keymap (Media / Code / Meet), encoder press cycles layers | P1 | S | 001, 002 | TODO |
-| [004](004-per-layer-oled-art.md) | Per-layer OLED image + wake screen on layer change | P2 | S | 003 | TODO |
-| [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | TODO |
-| [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | TODO |
+| [001](001-version-control-and-kmk-patch-record.md) | Git repo, README, record the local KMK patch | P1 | S | — | DONE (git + tag `baseline-2026-11-14` + root `README.md`) |
+| [002](002-tidy-code-py.md) | Tidy `code.py` (dead import, layout, debug switch) | P3 | S | 001 | REJECTED: superseded, `code.py` was rewritten for the configurator |
+| [003](003-real-keymap-with-layers-and-macros.md) | Three-layer keymap (Media / Code / Meet), encoder press cycles layers | P1 | S | 001, 002 | DONE (device check pending): delivered as the default `keymap.json`, editable in Macropad Studio |
+| [004](004-per-layer-oled-art.md) | Per-layer OLED image + wake screen on layer change | P2 | S | 003 | DONE (device check pending): `macropad_display.py` `LayerDisplay` |
+| [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | DONE (device check pending; `lib/neopixel.mpy` still needed): `layer_led.py` |
+| [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz |
 | [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED (with a one-line reason) | REJECTED (with a one-line reason)
+
+> **2026-11-14 update:** the user asked for a G Hub-style configurator, so plans
+> 003–006 were built directly as a configurable firmware (`config_loader.py` +
+> `keymap.json`) plus a browser app (`configurator/index.html`). The plan files
+> stay as design notes. Their device checklists (Step 4/5 in each) are still the right
+> on-hardware tests. Plan 007 is unchanged and still TODO.
 
 ## Dependency notes
 

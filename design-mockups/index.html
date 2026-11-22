@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Macropad Studio Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ======================= shell (the review page itself) ======================= */
+:root{--shell-bg:#111214;--shell-fg:#ececec;--shell-mut:#9a9da3;--shell-line:#2a2c30}
+*{box-sizing:border-box}
+body{margin:0;background:var(--shell-bg);color:var(--shell-fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
+.review{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 24px;background:rgba(17,18,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--shell-line)}
+.review h1{font-size:15px;margin:0;font-weight:650}
+.review p{margin:0;color:var(--shell-mut);font-size:13px}
+.switch{display:flex;gap:4px;margin-left:auto;background:#1c1d20;border:1px solid var(--shell-line);border-radius:10px;padding:4px}
+.switch button{border:0;background:transparent;color:var(--shell-mut);font:600 13px/1 inherit;padding:9px 14px;border-radius:7px;cursor:pointer}
+.switch button[aria-selected=true]{background:#2c2e33;color:#fff}
+.switch button:focus-visible{outline:2px solid #4c9bff;outline-offset:2px}
+.notes{max-width:1180px;margin:22px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.note{border:1px solid var(--shell-line);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--shell-mut)}
+.note b{display:block;color:var(--shell-fg);font-size:13px;margin-bottom:2px}
+@media (max-width:860px){.notes{grid-template-columns:1fr}}
+.stage{padding:22px 24px 60px}
+.scene{display:none;max-width:1180px;margin:0 auto}
+.scene.on{display:block}
+.label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--shell-mut);margin:26px 0 10px;font-weight:650}
+.desk{position:relative;border-radius:16px;overflow:hidden;min-height:760px;padding:0 0 40px}
+.menubar{height:30px;display:flex;align-items:center;gap:18px;padding:0 14px;font-size:13px}
+.menubar .sp{flex:1}
+.mbicon{display:grid;place-items:center;width:30px;height:22px;border-radius:6px}
+.wrapwin{position:relative;display:flex;justify-content:flex-start;padding:34px 0 0 24px}
+.popover{position:absolute;top:36px;right:18px;width:300px;z-index:5}
+svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+canvas.oled{display:block;width:100%;aspect-ratio:4/1;image-rendering:pixelated}
+
+/* shared structural layout for the editor window */
+.win{width:min(840px,calc(100% - 370px));min-width:640px}
+.tbar{display:flex;align-items:center;gap:12px}
+.lights{display:flex;gap:8px}.lights i{width:12px;height:12px;border-radius:50%;display:block}
+.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.body{display:grid;grid-template-columns:1fr 330px}
+.devcol{display:flex;flex-direction:column;align-items:center}
+.pad{width:330px}
+.ptop{display:flex;gap:16px;align-items:center}
+.ptop .scr{flex:1}
+.knob{width:76px;height:76px;flex:none;position:relative}
+.keys{display:grid;grid-template-columns:repeat(3,1fr)}
+.key{aspect-ratio:1;display:flex;flex-direction:column;justify-content:space-between;text-align:left;position:relative}
+.steps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:auto 1fr auto;align-items:center}
+.row{display:flex;align-items:center;gap:8px}
+.art{display:grid;grid-template-columns:auto 1fr 220px;gap:18px;align-items:start}
+.tools{display:flex;flex-direction:column;gap:6px}
+.cmbtag{position:absolute;top:6px;right:6px}
+@media (max-width:1100px){.popover{position:static;margin:16px auto 0}.wrapwin{padding-left:0;justify-content:center}.win{width:calc(100% - 32px);min-width:0}.body{grid-template-columns:1fr}.art{grid-template-columns:1fr}.tools{flex-direction:row;flex-wrap:wrap}}
+
+/* ============================ A · NATIVE MACOS ============================ */
+.A{--win:rgba(255,255,255,.78);--side:rgba(246,246,248,.72);--fg:#1d1d1f;--mut:#6e6e73;--line:rgba(0,0,0,.09);--acc:#0a84ff;--acc-soft:rgba(10,132,255,.12);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;color:var(--fg)}
+.A .desk{background:radial-gradient(900px 500px at 15% 10%,#b9d4ff 0,transparent 60%),radial-gradient(800px 600px at 90% 90%,#f7c8e0 0,transparent 60%),linear-gradient(135deg,#dfe9fb,#f3e6f2)}
+.A .menubar{background:rgba(255,255,255,.45);backdrop-filter:blur(20px) saturate(1.6);color:#1d1d1f}
+.A .mbicon.on{background:rgba(0,0,0,.12)}
+.A .popover{background:rgba(250,250,252,.72);backdrop-filter:blur(30px) saturate(1.8);border:1px solid rgba(255,255,255,.7);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.12);padding:10px}
+.A .pop-h{display:flex;align-items:center;gap:8px;padding:4px 6px 10px;font-weight:600;font-size:13px}
+.A .pop-h small{margin-left:auto;color:var(--mut);font-weight:500;display:flex;align-items:center;gap:5px}
+.A .dot{width:7px;height:7px;border-radius:50%;background:#28c840;display:inline-block}
+.A .pop-oled{background:#000;border-radius:8px;padding:8px;margin:0 2px 10px}
+.A .pop-sec{font-size:11px;font-weight:600;color:var(--mut);padding:2px 8px 4px}
+.A .lay{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:7px;font-size:13px}
+.A .lay.on{background:var(--acc);color:#fff}
+.A .lay kbd{margin-left:auto;font:12px -apple-system;color:inherit;opacity:.6}
+.A .sw{width:10px;height:10px;border-radius:50%}
+.A .hr{height:1px;background:var(--line);margin:6px 4px}
+.A .mi{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:7px;font-size:13px}
+.A .toggle{margin-left:auto;width:30px;height:18px;border-radius:9px;background:#34c759;position:relative}
+.A .toggle::after{content:"";position:absolute;right:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.A .win{background:var(--win);backdrop-filter:blur(40px) saturate(1.8);border-radius:14px;box-shadow:0 30px 80px rgba(30,40,80,.25),0 0 0 .5px rgba(0,0,0,.15);overflow:hidden}
+.A .tbar{height:52px;padding:0 14px;border-bottom:1px solid var(--line)}
+.A .seg{display:flex;background:rgba(0,0,0,.06);border-radius:8px;padding:2px;margin:0 auto}
+.A .seg span{padding:4px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--fg);display:flex;align-items:center;gap:6px}
+.A .seg span.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.A .tbtn{font-size:13px;padding:5px 12px;border-radius:7px;background:rgba(0,0,0,.05);display:flex;align-items:center;gap:6px}
+.A .tbtn.pri{background:var(--acc);color:#fff}
+.A .devcol{padding:34px 20px 22px}
+.A .pad{background:linear-gradient(180deg,#e9e9ec,#d7d7dc);border-radius:26px;padding:22px;box-shadow:inset 0 1px 0 #fff,0 14px 30px rgba(0,0,0,.18),0 0 0 .5px rgba(0,0,0,.15)}
+.A .scr{background:#000;border-radius:7px;padding:7px;box-shadow:inset 0 0 0 1px #333}
+.A .knob{border-radius:50%;background:radial-gradient(circle at 35% 30%,#fafafa,#bfc0c5 70%);box-shadow:0 4px 10px rgba(0,0,0,.25),inset 0 -2px 4px rgba(0,0,0,.15)}
+.A .knob::after{content:"";position:absolute;left:50%;top:9px;width:3px;height:12px;margin-left:-1.5px;border-radius:2px;background:#555}
+.A .keys{gap:12px;margin-top:20px}
+.A .key{border-radius:12px;background:linear-gradient(180deg,#fff,#f0f0f3);box-shadow:0 2px 0 #c5c5ca,0 3px 8px rgba(0,0,0,.12);padding:9px;font-size:12px}
+.A .key b{font-size:13px;font-weight:600}.A .key small{color:var(--mut);font-size:11px}
+.A .key.sel{box-shadow:0 0 0 3px var(--acc),0 2px 0 #c5c5ca}
+.A .key.cmb{box-shadow:0 0 0 2px #bf5af2,0 2px 0 #c5c5ca}
+.A .cmbtag{width:8px;height:8px;border-radius:50%;background:#bf5af2}
+.A .key .n{font-size:10px;color:#8e8e93}
+.A .ticker{margin-top:20px;width:100%;max-width:400px;font-size:12px;color:var(--mut)}
+.A .ticker .t{display:flex;gap:10px;padding:6px 10px;border-radius:7px;flex-wrap:wrap}
+.A .ticker .t:first-child{background:rgba(0,0,0,.04);color:var(--fg)}
+.A .ticker kbd{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:#fff;border:1px solid var(--line);border-radius:5px;padding:0 5px}
+.A .side{background:var(--side);border-left:1px solid var(--line);padding:16px}
+.A .side h2{font-size:15px;margin:0 0 2px;font-weight:600}
+.A .side .sub{font-size:12px;color:var(--mut);margin-bottom:12px}
+.A .grp{background:#fff;border-radius:10px;box-shadow:0 0 0 .5px rgba(0,0,0,.1);margin-bottom:12px}
+.A .grp .gr{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:13px;border-top:1px solid var(--line)}
+.A .grp .gr:first-child{border-top:0}
+.A .grp .gr .v{margin-left:auto;color:var(--mut)}
+.A .cap{font-size:11px;font-weight:600;color:var(--mut);margin:0 4px 6px}
+.A .steps .step{gap:10px;padding:8px 12px;border-top:1px solid var(--line);font-size:13px}
+.A .steps .step:first-child{border-top:0}
+.A .grip{color:#c7c7cc}
+.A .chip{font:12px ui-monospace,Menlo,monospace;background:var(--acc-soft);color:#0060c7;padding:1px 6px;border-radius:5px}
+.A .addrow{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--line)}
+.A .pill{font-size:12px;padding:3px 9px;border-radius:6px;background:rgba(0,0,0,.05);display:flex;align-items:center;gap:5px}
+.A .pill.rec{background:#ff3b30;color:#fff}
+.A .artwin{margin:26px auto 0;width:min(860px,calc(100% - 32px));background:var(--win);backdrop-filter:blur(40px);border-radius:14px;box-shadow:0 20px 60px rgba(30,40,80,.2),0 0 0 .5px rgba(0,0,0,.15);padding:16px 18px}
+.A .artwin h3{margin:0 0 12px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.A .tool{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:rgba(0,0,0,.05)}
+.A .tool.on{background:var(--acc);color:#fff}
+.A .canvasbox{background:#000;border-radius:8px;padding:8px}
+.A .frames{display:flex;gap:6px;margin-top:10px;align-items:center}
+.A .frames div{width:64px;border-radius:5px;background:#000;padding:3px;box-shadow:0 0 0 .5px rgba(0,0,0,.2)}
+.A .frames div.on{box-shadow:0 0 0 2px var(--acc)}
+.A .pscr{background:#000;border-radius:7px;padding:6px;margin-bottom:12px}
+
+/* ========================= B · MINIMAL + PLAYFUL ========================= */
+.B{--card:#fffdf8;--fg:#24211c;--mut:#6f685c;--line:#e6dfd1;--acc:#ff6a3d;--mint:#bfe8d4;--peach:#ffd3c2;--lilac:#ddd3ff;--sun:#ffe7a3;--sky:#cfe5ff;
+  font-family:Nunito,system-ui,sans-serif;color:var(--fg)}
+.B h2,.B h3{font-family:Fredoka,Nunito,sans-serif}
+.B .desk{background:radial-gradient(700px 400px at 80% 0,#ffe3cf 0,transparent 60%),radial-gradient(600px 500px at 0 100%,#d8f0e4 0,transparent 60%),#f3efe6}
+.B .menubar{background:rgba(255,253,248,.7);backdrop-filter:blur(14px);font-weight:700;color:#3b372f}
+.B .mbicon.on{background:var(--acc);color:#fff}
+.B .popover{background:var(--card);border-radius:24px;padding:14px;box-shadow:0 2px 0 var(--line),0 20px 40px rgba(80,60,30,.18);border:2px solid #fff}
+.B .pop-h{display:flex;align-items:center;gap:8px;font:600 16px Fredoka;margin:2px 4px 12px}
+.B .pop-h small{margin-left:auto;font:700 12px Nunito;color:#23704b;background:var(--mint);padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:5px}
+.B .dot{width:7px;height:7px;border-radius:50%;background:#23704b;display:inline-block}
+.B .pop-oled{background:#1d1b18;border-radius:16px;padding:10px;margin-bottom:12px}
+.B .pop-sec{display:none}
+.B .laygrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.B .lay{border-radius:16px;padding:10px 8px;text-align:center;font:600 13px Fredoka;border:2px solid transparent;background:#f6f1e7}
+.B .lay .sw{width:22px;height:22px;border-radius:50%;margin:0 auto 6px;display:block;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.B .lay.on{border-color:var(--fg);background:#fff}
+.B .lay kbd{display:none}
+.B .hr{display:none}
+.B .mi{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;font-weight:700;font-size:14px;background:#f6f1e7;margin-top:6px}
+.B .toggle{margin-left:auto;width:40px;height:24px;border-radius:12px;background:var(--acc);position:relative}
+.B .toggle::after{content:"";position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff}
+.B .win{background:var(--card);border-radius:30px;box-shadow:0 3px 0 var(--line),0 40px 80px rgba(80,60,30,.2);border:2px solid #fff;overflow:hidden}
+.B .tbar{height:64px;padding:0 20px}
+.B .seg{display:flex;gap:6px;margin:0 auto}
+.B .seg span{padding:7px 14px;border-radius:999px;font:600 14px Fredoka;background:#f3eee3;display:flex;align-items:center;gap:7px}
+.B .seg span i{width:10px;height:10px;border-radius:50%;display:block}
+.B .seg span.on{background:var(--fg);color:#fff}
+.B .tbtn{font:700 14px Nunito;padding:8px 14px;border-radius:999px;background:#f3eee3;display:flex;align-items:center;gap:6px}
+.B .tbtn.pri{background:var(--acc);color:#fff;box-shadow:0 3px 0 #d94c22}
+.B .devcol{padding:22px 20px 26px;background:linear-gradient(180deg,#faf6ee,#f4eee2);margin:0 0 16px 16px;border-radius:24px}
+.B .pad{background:#efe9dc;border-radius:34px;padding:22px;box-shadow:inset 0 2px 0 #fff,0 6px 0 #ddd4c3,0 18px 30px rgba(80,60,30,.15)}
+.B .scr{background:#1d1b18;border-radius:14px;padding:8px}
+.B .knob{border-radius:50%;background:var(--acc);box-shadow:inset 0 -5px 0 rgba(0,0,0,.15),0 5px 0 #c94a22}
+.B .knob::after{content:"";position:absolute;left:50%;top:10px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:#fff}
+.B .keys{gap:12px;margin-top:20px}
+.B .key{border-radius:20px;padding:10px;box-shadow:inset 0 -5px 0 rgba(0,0,0,.08),0 4px 0 rgba(0,0,0,.07);font-size:12px;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.B .key b{font:600 15px Fredoka}.B .key small{color:#5b554a;font-weight:700;font-size:11px}
+.B .key .n{font:700 11px Nunito;opacity:.55}
+.B .key.sel{outline:3px solid var(--fg);outline-offset:3px;transform:translateY(-3px)}
+.B .cmbtag{font:600 10px Fredoka;background:#7a62e0;color:#fff;border-radius:999px;padding:1px 6px}
+.B .cmbtag::after{content:"combo"}
+.B .ticker{margin-top:18px;width:100%;max-width:400px;display:flex;flex-direction:column;gap:6px}
+.B .ticker .t{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fff;border-radius:14px;padding:8px 12px;font-weight:700;font-size:13px;box-shadow:0 2px 0 var(--line)}
+.B .ticker .t:not(:first-child){opacity:.6}
+.B .ticker kbd{font:600 12px Fredoka;background:var(--sun);border-radius:8px;padding:2px 8px}
+.B .side{padding:6px 22px 22px}
+.B .side h2{font-size:24px;margin:6px 0 0;font-weight:600}
+.B .side .sub{color:var(--mut);font-weight:700;font-size:13px;margin-bottom:14px}
+.B .types{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.B .types span{font:600 13px Fredoka;padding:6px 12px;border-radius:999px;background:#f3eee3}
+.B .types span.on{background:var(--lilac);box-shadow:inset 0 0 0 2px #7a62e0;color:#3d2c9e}
+.B .cap{font:800 11px Nunito;color:var(--mut);margin:0 2px 8px;letter-spacing:.06em;text-transform:uppercase}
+.B .steps{gap:8px}
+.B .steps .step{gap:10px;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:0 2px 0 var(--line);font-weight:700;font-size:14px}
+.B .num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:600 12px Fredoka;background:var(--sky)}
+.B .chip{font:600 13px Fredoka;background:var(--sun);padding:2px 9px;border-radius:8px}
+.B .grip{color:#bdb4a2}
+.B .addrow{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.B .pill{font:700 13px Nunito;padding:7px 12px;border-radius:999px;background:#f3eee3;display:flex;align-items:center;gap:6px}
+.B .pill.rec{background:#e8394a;color:#fff;box-shadow:0 3px 0 #b8222f}
+.B .grp{background:#fff;border-radius:18px;padding:4px 14px;margin-top:6px;box-shadow:0 2px 0 var(--line)}
+.B .grp .gr{display:flex;align-items:center;padding:10px 0;font-weight:700;font-size:14px;border-top:2px dashed var(--line)}
+.B .grp .gr:first-child{border-top:0}
+.B .grp .gr .v{margin-left:auto;color:var(--mut)}
+.B .artwin{margin:28px auto 0;width:min(860px,calc(100% - 32px));background:var(--card);border-radius:30px;padding:20px 22px;box-shadow:0 3px 0 var(--line),0 30px 60px rgba(80,60,30,.15);border:2px solid #fff}
+.B .artwin h3{margin:0 0 14px;font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px}
+.B .tool{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#f3eee3}
+.B .tool.on{background:var(--fg);color:#fff}
+.B .canvasbox{background:#1d1b18;border-radius:18px;padding:10px}
+.B .frames{display:flex;gap:8px;margin-top:12px;align-items:center}
+.B .frames div{width:70px;border-radius:10px;background:#1d1b18;padding:4px}
+.B .frames div.on{outline:3px solid var(--acc);outline-offset:2px}
+.B .pscr{background:#1d1b18;border-radius:12px;padding:6px;margin-bottom:12px}
+
+/* ============================ C · RETRO / PIXEL ============================ */
+.C{--panel:#12150f;--fg:#c8ffb8;--mut:#86b07a;--dim:#2c3a26;--acc:#8cff6a;--amb:#ffb648;--pink:#ff5fa2;
+  font-family:VT323,ui-monospace,monospace;color:var(--fg);font-size:20px;line-height:1.15}
+.C .desk{background:#070806;background-image:radial-gradient(rgba(140,255,106,.06) 1px,transparent 1px);background-size:6px 6px}
+.C .desk::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px)}
+.C .menubar{background:#10130d;border-bottom:2px solid var(--dim);font-size:18px}
+.C .mbicon{border-radius:0}.C .mbicon.on{background:var(--acc);color:#0b0d09}
+.C .popover{background:var(--panel);padding:12px;box-shadow:0 -4px 0 0 var(--acc),0 4px 0 0 var(--acc),-4px 0 0 0 var(--acc),4px 0 0 0 var(--acc),10px 10px 0 4px rgba(0,0,0,.6)}
+.C .pop-h{display:flex;align-items:center;gap:8px;font:10px "Press Start 2P";margin-bottom:12px;color:var(--acc)}
+.C .pop-h small{margin-left:auto;font:18px VT323;color:var(--mut);display:flex;align-items:center;gap:6px}
+.C .dot{width:8px;height:8px;background:var(--acc);display:inline-block;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.C .dot,.C .cursor{animation:none}}
+.C .pop-oled{background:#000;padding:6px;margin-bottom:12px;box-shadow:0 0 0 2px var(--dim)}
+.C .pop-sec{font:9px "Press Start 2P";color:var(--mut);margin:4px 0 6px}
+.C .lay{display:flex;align-items:center;gap:10px;padding:2px 6px}
+.C .lay.on{background:var(--acc);color:#0b0d09}
+.C .lay::before{content:" ";white-space:pre;width:10px}
+.C .lay.on::before{content:">"}
+.C .lay kbd{margin-left:auto;font:18px VT323;opacity:.7}
+.C .sw{width:10px;height:10px}
+.C .hr{border-top:2px dashed var(--dim);margin:8px 0}
+.C .mi{display:flex;align-items:center;gap:10px;padding:2px 6px}
+.C .toggle{margin-left:auto;font-size:18px}
+.C .toggle::after{content:"[ON ]";color:var(--acc)}
+.C .win{background:var(--panel);box-shadow:0 -4px 0 0 var(--dim),0 4px 0 0 var(--dim),-4px 0 0 0 var(--dim),4px 0 0 0 var(--dim),14px 14px 0 4px rgba(0,0,0,.7)}
+.C .tbar{height:46px;padding:0 14px;background:var(--dim);color:var(--fg)}
+.C .lights i{border-radius:0}
+.C .title{font:10px "Press Start 2P"}
+.C .seg{display:flex;gap:10px;margin:0 auto}
+.C .seg span{padding:2px 8px;display:flex;gap:6px;align-items:center}
+.C .seg span.on{background:var(--fg);color:#0b0d09}
+.C .tbtn{padding:2px 10px;display:flex;gap:6px;align-items:center;background:#0b0d09}
+.C .tbtn.pri{background:var(--amb);color:#0b0d09}
+.C .devcol{padding:30px 20px}
+.C .pad{background:#1a1f15;padding:20px;box-shadow:0 -4px 0 0 #3d4f35,0 4px 0 0 #3d4f35,-4px 0 0 0 #3d4f35,4px 0 0 0 #3d4f35,8px 8px 0 4px #000}
+.C .scr{background:#000;padding:6px;box-shadow:0 0 0 4px #000,0 0 0 6px #3d4f35}
+.C .knob{background:conic-gradient(#3d4f35 0 25%,#2c3a26 0 50%,#3d4f35 0 75%,#2c3a26 0);box-shadow:0 0 0 4px #000}
+.C .knob::after{content:"";position:absolute;left:50%;top:6px;width:8px;height:16px;margin-left:-4px;background:var(--acc)}
+.C .keys{gap:14px;margin-top:22px}
+.C .key{background:#232a1d;padding:8px;box-shadow:0 -3px 0 0 #3d4f35,0 3px 0 0 #3d4f35,-3px 0 0 0 #3d4f35,3px 0 0 0 #3d4f35,0 9px 0 0 #000;font-size:17px}
+.C .key b{font:9px/1.4 "Press Start 2P";color:var(--fg)}.C .key small{color:var(--mut);font-size:16px}
+.C .key .n{color:var(--mut);font-size:15px}
+.C .key.sel{background:#2f3d24;box-shadow:0 -3px 0 0 var(--acc),0 3px 0 0 var(--acc),-3px 0 0 0 var(--acc),3px 0 0 0 var(--acc),0 9px 0 0 #000}
+.C .key.cmb{box-shadow:0 -3px 0 0 var(--pink),0 3px 0 0 var(--pink),-3px 0 0 0 var(--pink),3px 0 0 0 var(--pink),0 9px 0 0 #000}
+.C .cmbtag{color:var(--pink);font-size:15px}
+.C .cmbtag::after{content:"C1"}
+.C .ticker{margin-top:24px;width:100%;max-width:400px;background:#000;padding:8px 10px;box-shadow:0 0 0 2px var(--dim)}
+.C .ticker .t{display:flex;gap:10px;flex-wrap:wrap}
+.C .ticker .t:not(:first-child){color:var(--mut)}
+.C .ticker kbd{font:inherit;color:var(--amb)}
+.C .cursor{display:inline-block;width:10px;height:18px;background:var(--acc);vertical-align:-3px;animation:blink 1s steps(2) infinite}
+.C .side{border-left:4px solid var(--dim);padding:16px}
+.C .side h2{font:12px "Press Start 2P";margin:2px 0 6px;color:var(--acc)}
+.C .side .sub{color:var(--mut);margin-bottom:14px}
+.C .types{display:flex;flex-wrap:wrap;gap:4px 10px;margin-bottom:14px}
+.C .types span{padding:0 6px}
+.C .types span.on{background:var(--acc);color:#0b0d09}
+.C .cap{font:9px "Press Start 2P";color:var(--mut);margin:6px 0 8px}
+.C .steps{gap:6px}
+.C .steps .step{gap:10px;padding:4px 8px;background:#0b0d09;box-shadow:0 0 0 2px var(--dim)}
+.C .num{color:var(--amb)}
+.C .chip{color:var(--amb)}
+.C .grip{color:#4a6040}
+.C .addrow{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.C .pill{padding:0 8px;box-shadow:0 0 0 2px var(--dim);display:flex;gap:6px;align-items:center}
+.C .pill.rec{background:var(--pink);color:#0b0d09;box-shadow:none}
+.C .grp{margin-top:6px;box-shadow:0 0 0 2px var(--dim);padding:6px 10px}
+.C .grp .gr{display:flex;padding:2px 0}
+.C .grp .gr .v{margin-left:auto;color:var(--amb)}
+.C .artwin{margin:30px auto 0;width:min(860px,calc(100% - 32px));background:var(--panel);padding:16px 18px;box-shadow:0 -4px 0 0 var(--dim),0 4px 0 0 var(--dim),-4px 0 0 0 var(--dim),4px 0 0 0 var(--dim),14px 14px 0 4px rgba(0,0,0,.7)}
+.C .artwin h3{margin:0 0 14px;font:11px "Press Start 2P";color:var(--acc);display:flex;gap:10px;align-items:center}
+.C .tool{width:40px;height:40px;display:grid;place-items:center;box-shadow:0 0 0 2px var(--dim)}
+.C .tool.on{background:var(--acc);color:#0b0d09;box-shadow:none}
+.C .canvasbox{background:#000;padding:6px;box-shadow:0 0 0 2px var(--dim)}
+.C .frames{display:flex;gap:10px;margin-top:12px;align-items:center}
+.C .frames div{width:70px;background:#000;padding:3px;box-shadow:0 0 0 2px var(--dim)}
+.C .frames div.on{box-shadow:0 0 0 2px var(--acc)}
+.C .pscr{background:#000;padding:4px;margin-bottom:12px;box-shadow:0 0 0 2px var(--dim)}
+.C svg.i{stroke-linecap:square;stroke-linejoin:miter;stroke-width:2.2}
+</style>
+</head>
+<body>
+<div class="review">
+  <div><h1>Macropad Studio · 3 design directions</h1><p>A menu bar app plus an editor window. All three show the same content so you can compare them. None of this is built yet.</p></div>
+  <div class="switch" role="tablist" aria-label="Design direction">
+    <button role="tab" aria-selected="true" data-s="A">A · Native macOS</button>
+    <button role="tab" aria-selected="false" data-s="B">B · Minimal + playful</button>
+    <button role="tab" aria-selected="false" data-s="C">C · Retro / pixel</button>
+  </div>
+</div>
+<div class="notes">
+  <div class="note"><b>A · Native macOS</b>Looks like it shipped with the Mac: translucent glass panels, SF Pro, system blue, and settings grouped the way System Settings does it. Light and dark mode.</div>
+  <div class="note"><b>B · Minimal + playful</b>A hardware-toy feel: a warm paper background, chunky rounded shapes, pastel keycaps and bouncy motion. Fredoka for headings, Nunito for text.</div>
+  <div class="note"><b>C · Retro / pixel</b>Built around the OLED: phosphor green on black, pixel borders, Press Start 2P headings, VT323 text and a blinking cursor. The blinking stops when reduced motion is on.</div>
+</div>
+<div class="stage" id="stage"></div>
+
+<script>
+const IMG = {"goku": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAeP+AAAAAAAAB/gAAAAAAAH//gAAAAAAAAA4AAAAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAAAP8B///wAAAAAAAAAAAAAAH/4P8P//AAAAAAAAAAHgAP///+AfBweAAAAAAAAB/+H//////wf/gAAAAAAAAD//////////j/8AAAAAAAAB/////w////j/gAAAAAAAAf//////////+AAAAAAAAAHh//////////+AAAAAAAAAAf//////////gAAAAAAAAAAf////////h4AAAAAAAAAAAf8P/////4AAAAAAAAAAAAAAAB/wD/+AAAAAAAAAAAAAAAAA8AB/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "manandmountain": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAMAAAAAAAD/AAAAAAAAAAAD//GGAAAD//gAAAAAAAAAA//x////D////8AAAAAAAAP/8f/////////8AAAAAAAD//H//////////gAAAAAAA//gf/////////8AAAAAAAP/4H//////////AAAAAAAD/+D//////////4AAAAAAA//x///////////AAAAAAAP/+f//////////4AAAAAAD//n//////////+AAAAAAA//////////////4AAAAAAP/////////////+AAAAAAD//////////////wAAAAAA//////////////+AAAAAAP//////////////wAAAAAD//////////////+AAAAAB///////////////wAAAAB///////////////+AAAAA////////////////wAAAAf///////////////+AAAAH////////////////wAAAD/////////////////AAAB/////////////////4AAD/////////////////8AAP//////////////////AAP//////////////////4AP///////////////////AH///////////////////8f///", "turbulence": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AP/8AAAAAAAAGAAAH/AAAED//wAgAECAAMAAAAAAAAAA//AAIAAAAAAAAAAAAAAAAP//wAAAAAAAAAAAAAAAAAD//8AAAAAAAADABAAAAAAD///wAAAAAAAAAgAAAAAAAf//FgAACAAAAAAAAAAAAAD///8AAAAAAAAAAAAAAAAA//9wAAAAAAAQAAAAAAAAAP//9AAAAAAAAf+QwAAAAAD//4AAAAAAAAH/AAAAAAAA//AAABYAAAAPAAAAAAAAAP//xgD/AAAAHEAAAEACgwD//gAH/8AAABABgAAAAgCA//wAB//gAABgAYAAAAAAgP/AAAfh8AADgAHwAAAAAKD/4AAHwfAAAAAAQAAAAABg//gAA//AAAAAAJgAAgAAPP/4AAv/AAAAAAGEAgQAAA7/+AAH/AAAwAABgQCCAAAM//+AAfIAADgAxgDAEAAACv//wAAyQAAP+/SA4AAAAAD///9/vsQAEf/UADgAAAAA//+wAAAAAAAAAAAAgAAAAP/+6AAAAAAAAAAAAAAAAAD/4GgAAAAAAAAAAAAIAAAI//AAAAAAAAAA/+1gCAAAAP9gAAAAAAAAAP/3AAAAAAD//rAAEAAAAAB/oAAAAAAA//4AAAAAAAAAAAAAAAAAAP4AAAAAAAAAAAAAAAAAAAD//+8AAAAAAAAAAAAAAAAA"};
+const ICON = {
+  pad:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 9h2M11 9h2M15 9h2M7 13h2M11 13h2M15 13h2"/>',
+  play:'<path d="M7 5v14l11-7z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  rec:'<circle cx="12" cy="12" r="6"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+  grip:'<path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/>',
+  pencil:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  eraser:'<path d="m7 21-4-4 10-10 6 6-8 8z"/><path d="M14 21h7"/>',
+  fill:'<path d="m5 12 7-7 7 7-7 7z"/><path d="M20 15s2 2.5 2 4a2 2 0 0 1-4 0c0-1.5 2-4 2-4Z"/>',
+  text:'<path d="M5 6V4h14v2M12 4v16M9 20h6"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v4h16v-4"/>',
+  invert:'<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
+  eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>',
+  power:'<path d="M12 3v9"/><path d="M6.3 7.5a8 8 0 1 0 11.4 0"/>',
+  wand:'<path d="m4 20 12-12M14 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>',
+};
+const ic = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+
+const LAYERS = [['MEDIA','⌃1'],['CODE','⌃2'],['MEET','⌃3']];
+const KEYS = [
+  ['OPEN','⌘P'],['CMDS','⇧⌘P'],['COMMENT','⌘/'],
+  ['SIDEBAR','⌘B'],['PR REVIEW','Macro · 4 steps'],['SAVE','⌘S'],
+  ['DEBUG','F5'],['FIND ALL','⇧⌘F'],['REDO','⇧⌘Z'],
+];
+const STEPS = [['Press','⌘C'],['Wait','120 ms'],['Press','⌘V'],['Type','“LGTM, ship it”']];
+const PASTEL = ['var(--peach)','var(--sun)','var(--mint)','var(--sky)','var(--lilac)','var(--mint)','var(--sun)','var(--peach)','var(--sky)'];
+const COLORS = {A:['#0a84ff','#30d158','#ff453a'], B:['#7aa7ff','#4fc38a','#ff7a59'], C:['#5fd3ff','#8cff6a','#ff5fa2']};
+const up = (t, s) => t==='C' ? s.toUpperCase() : s;
+
+function scene(t){
+  const C = COLORS[t];
+  const layerRows = LAYERS.map(([n,k],i)=>`<div class="lay ${i===1?'on':''}"><span class="sw" style="background:${C[i]}"></span>${n}<kbd>${k}</kbd></div>`).join('');
+  const keys = KEYS.map(([l,s],i)=>`<div class="key ${i===4?'sel':''} ${i===0||i===2?'cmb':''}" style="${t==='B'?`background:${PASTEL[i]}`:''}">
+      <span class="n">${i+1}</span>${i===0||i===2?'<span class="cmbtag" aria-label="part of combo 1"></span>':''}<span><b>${l}</b><br><small>${s}</small></span></div>`).join('');
+  const steps = STEPS.map(([a,b],i)=>`<div class="step"><span class="${t==='A'?'grip':'num'}">${t==='A'?ic('grip'):(i+1)}</span><span>${up(t,a)} <span class="chip">${b}</span></span><span class="grip">${t==='A'?'⋯':ic('grip')}</span></div>`).join('');
+  const typeList = ['Shortcut','Media','Text','Macro','Layer'];
+  const segLayers = LAYERS.map(([n],i)=>`<span class="${i===1?'on':''}">${t==='B'?`<i style="background:${C[i]}"></i>`:''}${n}</span>`).join('');
+  const typeRow = t==='A'
+    ? `<div class="cap">Action</div><div class="grp"><div class="gr">Type<span class="v">Macro ▾</span></div><div class="gr">Screen label<span class="v">PR REVIEW</span></div></div>`
+    : `<div class="cap">${up(t,'Action')}</div><div class="types">${typeList.map(x=>`<span class="${x==='Macro'?'on':''}">${up(t,x)}</span>`).join('')}</div>`;
+  return `
+  <div class="label">1 · Menu bar dropdown &nbsp;+&nbsp; 2 · Editor window</div>
+  <div class="desk">
+    <div class="menubar"><b>${t==='C'?'MACROPAD':'Macropad Studio'}</b><span>File</span><span>Edit</span><span>Layer</span><span class="sp"></span>
+      <span class="mbicon on" aria-label="Macropad menu">${ic('pad')}</span><span>Fri 14:32</span></div>
+    <div class="popover" aria-label="Menu bar dropdown">
+      <div class="pop-h">${t==='C'?'MACROPAD':'Macropad'}<small><span class="dot"></span>${t==='C'?'LINKED':'Connected'}</small></div>
+      <div class="pop-oled"><canvas class="oled" data-img="goku" data-toast="CODE" width="512" height="128"></canvas></div>
+      <div class="pop-sec">${t==='C'?'LAYER':'Active layer'}</div>
+      ${t==='B'?`<div class="laygrid">${layerRows}</div>`:layerRows}
+      <div class="hr"></div>
+      <div class="mi">${ic('eye')}${up(t,'Live preview')}<span class="toggle"></span></div>
+      <div class="mi">${ic('gear')}${up(t,'Open Studio…')}${t==='A'?'<kbd style="margin-left:auto;opacity:.5">⌘,</kbd>':''}</div>
+      ${t!=='B'?`<div class="mi">${ic('power')}${up(t,'Quit')}</div>`:''}
+    </div>
+
+    <div class="wrapwin">
+      <div class="win">
+        <div class="tbar"><div class="lights"><i></i><i></i><i></i></div>
+          ${t==='C'?'<span class="title">STUDIO</span>':''}
+          <div class="seg">${segLayers}</div>
+          <span class="tbtn">${ic('play')}${up(t,'Try it')}</span>
+          <span class="tbtn pri">${up(t,'Save to pad')}</span>
+        </div>
+        <div class="body">
+          <div class="devcol">
+            <div class="pad">
+              <div class="ptop"><div class="scr"><canvas class="oled" data-img="goku" data-toast="PR REVIEW" width="512" height="128"></canvas></div><div class="knob" aria-label="Knob"></div></div>
+              <div class="keys">${keys}</div>
+            </div>
+            <div class="ticker" aria-label="What your computer receives">
+              <div class="t"><span>${t==='C'?'&gt;':'Now'}</span> Key 5 → <kbd>⌘C</kbd> <kbd>⌘V</kbd> <span>“LGTM, ship it”</span>${t==='C'?'<span class="cursor"></span>':''}</div>
+              <div class="t"><span>${t==='C'?'&gt;':'2s ago'}</span> Combo 1 + 3 → <kbd>⌃⌘Q</kbd> Lock screen</div>
+            </div>
+          </div>
+          <div class="side">
+            <h2>${t==='C'?'KEY_05':'Key 5'}</h2><div class="sub">${t==='C'?'layer: CODE // tap':'On CODE · when tapped'}</div>
+            ${typeRow}
+            <div class="cap">${up(t,'Steps')}</div>
+            ${t==='A'?`<div class="grp steps">${steps}<div class="addrow"><span class="pill">${ic('plus')}Step</span><span class="pill rec">${ic('rec')}Record</span></div></div>`
+                     :`<div class="steps">${steps}</div><div class="addrow"><span class="pill">${ic('plus')}${up(t,'Add step')}</span><span class="pill">${up(t,'+ Wait')}</span><span class="pill rec">${ic('rec')}${up(t,'Record')}</span></div>`}
+            <div class="cap" style="margin-top:14px">${up(t,'When held')}</div>
+            <div class="grp"><div class="gr">${t==='C'?'action':'Action'}<span class="v">${t==='C'?'MO(MEET)':'Hold for MEET'}</span></div><div class="gr">${t==='C'?'combos':'Combos'}<span class="v">${t==='C'?'none':'None'}</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="label" style="margin:30px auto 0;width:min(860px,calc(100% - 32px))">3 · OLED art editor</div>
+    <div class="artwin">
+      <h3>${ic('wand')}${t==='C'?'SCREEN_ART // CODE':'Screen art · CODE'}</h3>
+      <div class="art">
+        <div class="tools">${['pencil','eraser','fill','text','invert','upload'].map((n,i)=>`<span class="tool ${i===0?'on':''}" aria-label="${n}">${ic(n)}</span>`).join('')}</div>
+        <div><div class="canvasbox"><canvas class="oled grid" data-img="goku" width="1024" height="256"></canvas></div>
+          <div class="frames">${['goku','manandmountain','turbulence'].map((n,i)=>`<div class="${i===0?'on':''}"><canvas class="oled" data-img="${n}" width="128" height="32"></canvas></div>`).join('')}<span class="pill">${ic('plus')}${up(t,'Frame')}</span></div></div>
+        <div class="props">
+          <div class="cap">${t==='C'?'PREVIEW':'On the pad'}</div>
+          <div class="pscr"><canvas class="oled" data-img="goku" width="512" height="128"></canvas></div>
+          <div class="grp"><div class="gr">${t==='C'?'brush':'Brush'}<span class="v">1 px</span></div><div class="gr">${t==='C'?'dither':'Dither'}<span class="v">${t==='C'?'ON':'On'}</span></div><div class="gr">${t==='C'?'anim':'Animation'}<span class="v">${t==='C'?'3F @ 4FPS':'3 frames · 4 fps'}</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const PIX = {A:'#e8f2ff', B:'#ffe9b0', C:'#8cff6a'};
+const cache = {};
+function bits(name){
+  if (cache[name]) return Promise.resolve(cache[name]);
+  return new Promise(res => { const im = new Image(); im.onload = () => {
+    const c = document.createElement('canvas'); c.width=128; c.height=32; const x = c.getContext('2d'); x.drawImage(im,0,0);
+    const d = x.getImageData(0,0,128,32).data; const b = new Uint8Array(4096); for (let i=0;i<4096;i++) b[i] = d[i*4]>127?1:0; cache[name]=b; res(b); }; im.src = IMG[name]; });
+}
+async function paint(root, t){
+  for (const cv of root.querySelectorAll('canvas.oled')){
+    const b = (await bits(cv.dataset.img)).slice(); const toast = cv.dataset.toast;
+    const g = cv.getContext('2d'); const sx = cv.width/128, sy = cv.height/32;
+    if (toast){ // inverted label bottom-right, like the firmware's toast
+      const o = document.createElement('canvas'); o.width=128; o.height=32; const ox = o.getContext('2d');
+      ox.font='10px Menlo, monospace'; const w = Math.ceil(ox.measureText(toast).width)+4; const x0=127-w, y0=19;
+      ox.fillStyle='#fff'; ox.fillRect(x0,y0,w+1,13); ox.fillStyle='#000'; ox.textAlign='right'; ox.fillText(toast,126,30);
+      const d = ox.getImageData(0,0,128,32).data; for (let y=y0;y<32;y++) for (let x=x0;x<128;x++){ const i=y*128+x; b[i] = d[i*4]>127?1:0; }
+    }
+    g.fillStyle='#000'; g.fillRect(0,0,cv.width,cv.height); g.fillStyle = PIX[t];
+    const gap = cv.classList.contains('grid') ? 1 : (sx>=3?0.5:0);
+    for (let y=0;y<32;y++) for (let x=0;x<128;x++) if (b[y*128+x]) g.fillRect(x*sx,y*sy,sx-gap,sy-gap);
+    if (cv.classList.contains('grid')){ g.fillStyle='rgba(255,255,255,.05)'; for (let x=0;x<=128;x++) g.fillRect(x*sx,0,1,cv.height); for (let y=0;y<=32;y++) g.fillRect(0,y*sy,cv.width,1); }
+  }
+}
+const stage = document.getElementById('stage');
+for (const t of ['A','B','C']){
+  const s = document.createElement('section'); s.className = `scene ${t} ${t==='A'?'on':''}`; s.id = 'scene-'+t; s.setAttribute('role','tabpanel');
+  s.innerHTML = scene(t); stage.appendChild(s); paint(s, t);
+}
+document.querySelectorAll('.switch button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.switch button').forEach(x => x.setAttribute('aria-selected', x===b));
+  document.querySelectorAll('.scene').forEach(s => s.classList.toggle('on', s.id==='scene-'+b.dataset.s));
+  try { localStorage.setItem('mock.tab', b.dataset.s); } catch(e){}
+});
+try { const t = localStorage.getItem('mock.tab'); if (t) document.querySelector(`.switch [data-s="${t}"]`).click(); } catch(e){}
+</script>
+</body>
+</html>
