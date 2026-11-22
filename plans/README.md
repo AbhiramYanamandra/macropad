@@ -25,7 +25,7 @@ on the Mac, plus a human checklist on the device. Plans can be marked
 | [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz |
 | [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | BLOCKED: waits for plan 008's Sync to pad design, because hiding the drive stops the app writing `keymap.json` |
 | [008](008-porcelain-redesign.md) | Rebuild Macropad Studio as the approved Porcelain native Mac app (architecture proposal first, then slices) | P1 | L | 009; approval gate after Step 2 | TODO |
-| [009](009-layer-switch-without-knob.md) | Keys 7 + 9 cycle layers when the knob is not fitted; `knob` setting; fix combos always jumping to layer 1 | P1 | S | none; run before 008 | IN PROGRESS: implementation and host checks done; Chrome import/interaction checks incomplete; Step 7 device checklist pending |
+| [009](009-layer-switch-without-knob.md) | Keys 7 + 9 cycle layers when the knob is not fitted; `knob` setting; fix combos always jumping to layer 1 | P1 | S | none; run before 008 | DONE (device check pending): merged to main 2026-11-22 after review; host checks pass; still open: configurator Try it check in Chrome and the Step 7 pad checklist |
 
 Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED (with a one-line reason) | REJECTED (with a one-line reason)
 
