@@ -6,7 +6,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py macropad_display.py`
+> **Drift check (run first)**: `git -C ~/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py macropad_display.py`
 > Both will have changed (plans 002–004). Confirm `macropad_display.py` matches
 > the "Current state" excerpt exactly, and that `code.py` uses `LayerDisplay(`
 > and `EncoderHandler()`. Any mismatch is a STOP condition.
@@ -30,7 +30,7 @@ and the action (`VOL+`, `ZOOM-`, ...) on each encoder turn. Encoder turns also w
 
 ## Current state
 
-`/Users/ysabhiram/Desktop/Personal_Projects/rp2040/macropad_display.py` (created by plan 004):
+`~/Desktop/Personal_Projects/rp2040/macropad_display.py` (created by plan 004):
 
 ```python
 '''Project-local display tweaks on top of KMK's Display extension.
@@ -93,7 +93,7 @@ Vendored facts (do not edit these files):
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py /Users/ysabhiram/Desktop/Personal_Projects/rp2040/macropad_display.py` | exit 0 |
+| Syntax | `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/code.py ~/Desktop/Personal_Projects/rp2040/macropad_display.py` | exit 0 |
 | Shape check | Step 4 snippet | prints `OK` |
 | On-device (human) | deploy per `README.md` `## Deploy` | Step 5 checklist passes |
 
@@ -198,7 +198,7 @@ class ToastEncoderHandler(EncoderHandler):
 
 Keep the module docstring at the top of the file.
 
-**Verify**: `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/macropad_display.py` → exit 0
+**Verify**: `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/macropad_display.py` → exit 0
 
 ### Step 2: Use the new classes in `code.py`
 
@@ -237,7 +237,7 @@ i2c = busio.I2C(scl=board.D5, sda=board.D4, frequency=400_000)
 
 ### Step 4: Host-side shape check
 
-From `/Users/ysabhiram/Desktop/Personal_Projects/rp2040`:
+From `~/Desktop/Personal_Projects/rp2040`:
 
 ```bash
 python3 - <<'EOF'

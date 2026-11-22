@@ -6,7 +6,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py`
+> **Drift check (run first)**: `git -C ~/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- code.py`
 > If `code.py` changed since the baseline, compare the excerpts below against
 > the live file. A mismatch is a STOP condition.
 
@@ -28,7 +28,7 @@ the feature plans small and their diffs easy to review. There is no behavior cha
 
 ## Current state
 
-`/Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` (66 lines), key parts:
+`~/Desktop/Personal_Projects/rp2040/code.py` (66 lines), key parts:
 
 ```python
 1   print("Starting")
@@ -57,7 +57,7 @@ connected". Setting `Debug().enabled = True/False` (the `enabled` setter on the
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` | exit 0 |
+| Syntax | `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/code.py` | exit 0 |
 | On-device (human) | deploy per README `## Deploy`, then open serial with `screen /dev/tty.usbmodem* 115200` | `Starting keyboard...` printed, no `Traceback`; keys still type 1–9; encoder still changes volume; OLED still shows the image |
 
 ## Scope
@@ -138,9 +138,9 @@ if __name__ == "__main__":
 Keep `"lib/manandmountain.bmp"` exactly as it is. The path is relative to the drive root.
 
 **Verify**:
-- `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` → exit 0
-- `grep -c "I2CDisplayBus\|TextEntry\|# TextEntry" /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` → `0`
-- `grep -o "board\.D[0-9]*" /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py | wc -l` → `11` (6 matrix + 3 encoder + 2 I2C pins)
+- `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/code.py` → exit 0
+- `grep -c "I2CDisplayBus\|TextEntry\|# TextEntry" ~/Desktop/Personal_Projects/rp2040/code.py` → `0`
+- `grep -o "board\.D[0-9]*" ~/Desktop/Personal_Projects/rp2040/code.py | wc -l` → `11` (6 matrix + 3 encoder + 2 I2C pins)
 
 ### Step 2: On-device check (human)
 

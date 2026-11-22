@@ -80,7 +80,7 @@ The knob is a future plan, not a hardware change. The PCB already has routed hea
 
 ## Git workflow
 
-- Branch `pilot/008-porcelain`. One commit per step or slice. Do not push. The repository has no remote.
+- Branch `pilot/008-porcelain`. One commit per step or slice. The repository is public at `github.com/AbhiramYanamandra/macropad`; push only when the owner asks, and never commit secrets, Wi-Fi details or personal paths.
 
 ## Steps
 

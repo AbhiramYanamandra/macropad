@@ -17,11 +17,11 @@
 - **Risk**: LOW
 - **Depends on**: none
 - **Category**: dx
-- **Planned at**: no git repo yet (snapshot of `/Users/ysabhiram/Desktop/Personal_Projects/rp2040`), 2026-11-14
+- **Planned at**: no git repo yet (snapshot of `~/Desktop/Personal_Projects/rp2040`), 2026-11-14
 
 ## Why this matters
 
-The project folder `/Users/ysabhiram/Desktop/Personal_Projects/rp2040` is a copy of a CircuitPython
+The project folder `~/Desktop/Personal_Projects/rp2040` is a copy of a CircuitPython
 board's `CIRCUITPY` drive. It has no version control. So a bad edit can't be undone,
 and none of the later plans have a commit to check for drift against.
 Someone also edited the vendored KMK library by hand
@@ -70,9 +70,9 @@ hardware, the deploy command and the KMK patch.
 
 | Purpose | Command | Expected on success |
 |---|---|---|
-| Syntax check | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/code.py` | exit 0, no output |
-| Git state | `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 status --short` | empty after the commit |
-| Tag exists | `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 tag -l baseline-2026-11-14` | prints `baseline-2026-11-14` |
+| Syntax check | `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/code.py` | exit 0, no output |
+| Git state | `git -C ~/Desktop/Personal_Projects/rp2040 status --short` | empty after the commit |
+| Tag exists | `git -C ~/Desktop/Personal_Projects/rp2040 tag -l baseline-2026-11-14` | prints `baseline-2026-11-14` |
 
 ## Scope
 
@@ -96,7 +96,7 @@ hardware, the deploy command and the KMK patch.
 
 ### Step 1: Create `.gitignore`
 
-Create `/Users/ysabhiram/Desktop/Personal_Projects/rp2040/.gitignore` with exactly:
+Create `~/Desktop/Personal_Projects/rp2040/.gitignore` with exactly:
 
 ```
 .DS_Store
@@ -105,37 +105,37 @@ __pycache__/
 *.pyc
 ```
 
-**Verify**: `cat /Users/ysabhiram/Desktop/Personal_Projects/rp2040/.gitignore` → those 4 lines.
+**Verify**: `cat ~/Desktop/Personal_Projects/rp2040/.gitignore` → those 4 lines.
 
 ### Step 2: Create `README.md`
 
-Create `/Users/ysabhiram/Desktop/Personal_Projects/rp2040/README.md` with these sections, filled in from "Current state" above:
+Create `~/Desktop/Personal_Projects/rp2040/README.md` with these sections, filled in from "Current state" above:
 
 1. `# Macropad (XIAO RP2040 + KMK)`, with a one-paragraph description.
 2. `## Hardware`: board, CircuitPython version, and a pin table with these rows: matrix cols, matrix rows, diode orientation, encoder A/B/button, OLED SDA/SCL/address. Add a line saying all 11 GPIO pins (D0–D10) are in use, so new peripherals must go on the I2C bus (D4/D5). The onboard NeoPixel (GPIO12, power on GPIO11) is also free to use.
 3. `## Deploy`: plug in the board, then copy the project to the drive with this command (put it in a `bash` code block):
 
    ```
-   rsync -av --exclude '.git' --exclude 'plans' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' /Users/ysabhiram/Desktop/Personal_Projects/rp2040/ /Volumes/CIRCUITPY/
+   rsync -av --exclude '.git' --exclude 'plans' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' ~/Desktop/Personal_Projects/rp2040/ /Volumes/CIRCUITPY/
    ```
 
    Note that CircuitPython auto-reloads when `code.py` changes. To read the serial console, use `screen /dev/tty.usbmodem* 115200` (quit with `Ctrl-A` then `K`). Say explicitly: never add `--delete` to the rsync command.
 4. `## Local patches to vendored KMK`: list `kmk/extensions/display/ssd1306.py`. Explain that it imports `I2CDisplayBus` from the `i2cdisplaybus` module and uses it in `during_bootup`, because CircuitPython 10 removed `displayio.I2CDisplay`. Say it must be reapplied after any KMK update, and that `sh1106.py` is unpatched and unused.
 5. `## Rescue`: if the board stops showing the `CIRCUITPY` drive, there are two ways back. (a) Safe mode: press the XIAO's reset button once during the ~1 s window right after power-up while the status LED blinks; safe mode skips `boot.py` and `code.py`, and the drive appears. (b) Hold the BOOT button while plugging in to get the `RPI-RP2` UF2 bootloader drive and reflash CircuitPython.
 
-**Verify**: `grep -c "^## " /Users/ysabhiram/Desktop/Personal_Projects/rp2040/README.md` → `4` or more, and `grep -c "i2cdisplaybus" /Users/ysabhiram/Desktop/Personal_Projects/rp2040/README.md` → `1` or more.
+**Verify**: `grep -c "^## " ~/Desktop/Personal_Projects/rp2040/README.md` → `4` or more, and `grep -c "i2cdisplaybus" ~/Desktop/Personal_Projects/rp2040/README.md` → `1` or more.
 
 ### Step 3: Initialize git, commit, tag
 
 ```bash
-cd /Users/ysabhiram/Desktop/Personal_Projects/rp2040 && git init -b main && git add -A && git commit -m "chore: initial snapshot of macropad firmware" && git tag baseline-2026-11-14
+cd ~/Desktop/Personal_Projects/rp2040 && git init -b main && git add -A && git commit -m "chore: initial snapshot of macropad firmware" && git tag baseline-2026-11-14
 ```
 
 **Verify**:
-- `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 status --short` → empty
-- `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 ls-files | grep -c DS_Store` → `0`
-- `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 ls-files | grep -c "^kmk/"` → greater than 50
-- `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 tag -l baseline-2026-11-14` → `baseline-2026-11-14`
+- `git -C ~/Desktop/Personal_Projects/rp2040 status --short` → empty
+- `git -C ~/Desktop/Personal_Projects/rp2040 ls-files | grep -c DS_Store` → `0`
+- `git -C ~/Desktop/Personal_Projects/rp2040 ls-files | grep -c "^kmk/"` → greater than 50
+- `git -C ~/Desktop/Personal_Projects/rp2040 tag -l baseline-2026-11-14` → `baseline-2026-11-14`
 
 ## Test plan
 
@@ -151,7 +151,7 @@ There is no code change, so there are no tests. `python3 -m py_compile code.py` 
 
 ## STOP conditions
 
-- `/Users/ysabhiram/Desktop/Personal_Projects/rp2040` is already a git repo (`git -C ... rev-parse` succeeds). Report it instead of re-initializing.
+- `~/Desktop/Personal_Projects/rp2040` is already a git repo (`git -C ... rev-parse` succeeds). Report it instead of re-initializing.
 - `git commit` fails because no user name or email is configured. Do NOT set a global identity. Report back so the user can set it.
 - `kmk/extensions/display/ssd1306.py` no longer contains `I2CDisplayBus`. That means the patch was reverted, so report it.
 

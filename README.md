@@ -30,7 +30,7 @@ layers, and 7 + 9 stays as a backup. See `plans/009-layer-switch-without-knob.md
 Copy these onto the `CIRCUITPY` drive (keep the existing `kmk/` and `lib/`):
 
 ```bash
-rsync -av --exclude '.git' --exclude 'plans' --exclude 'configurator' --exclude '__pycache__' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' /Users/ysabhiram/Desktop/Personal_Projects/rp2040/ /Volumes/CIRCUITPY/
+rsync -av --exclude '.git' --exclude 'plans' --exclude 'configurator' --exclude '__pycache__' --exclude '.DS_Store' --exclude 'README.md' --exclude '.gitignore' ~/Desktop/Personal_Projects/rp2040/ /Volumes/CIRCUITPY/
 ```
 
 Never add `--delete`. For the LED, also copy `neopixel.mpy` from the
@@ -75,3 +75,9 @@ If the pad misbehaves, use safe mode (it skips `code.py` and keeps the drive vis
 while the LED blinks right after plugging in. If that fails, hold BOOT while plugging in to get the
 `RPI-RP2` drive and reflash CircuitPython. The pre-configurator firmware is saved in git:
 `git checkout baseline-2026-11-14 -- code.py`.
+
+## Licences
+
+- `kmk/` is vendored from [KMK firmware](https://github.com/KMKfw/kmk_firmware) and is licensed under the GPLv3. See `kmk/LICENSE.md`. Local patches are listed under "Local patches to vendored KMK" above.
+- `lib/adafruit_display_text/` and `lib/adafruit_displayio_ssd1306.mpy` are compiled [Adafruit CircuitPython libraries](https://circuitpython.org/libraries), released by Adafruit under the MIT licence.
+- The rest of this repository (firmware glue, Macropad Studio, plans and design mockups) has no licence chosen yet, so all rights are reserved by the author.

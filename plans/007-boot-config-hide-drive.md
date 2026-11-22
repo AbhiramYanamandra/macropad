@@ -8,7 +8,7 @@
 > report — do not improvise. When done, update the status row for this plan
 > in `plans/README.md`.
 >
-> **Drift check (run first)**: `git -C /Users/ysabhiram/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- boot.py kmk/bootcfg.py`
+> **Drift check (run first)**: `git -C ~/Desktop/Personal_Projects/rp2040 diff --stat baseline-2026-11-14..HEAD -- boot.py kmk/bootcfg.py`
 > Both must be unchanged (`boot.py` is still 0 bytes). Otherwise STOP.
 >
 > **This plan changes how the board shows up over USB. Do NOT deploy it to the
@@ -35,7 +35,7 @@ the standard 6-key report that's unnecessary, and NKRO is less compatible with s
 
 ## Current state
 
-- `/Users/ysabhiram/Desktop/Personal_Projects/rp2040/boot.py`: empty (0 bytes).
+- `~/Desktop/Personal_Projects/rp2040/boot.py`: empty (0 bytes).
 - Matrix (`code.py`): `kbd.col_pins = (board.D0, board.D2, board.D9)`,
   `kbd.row_pins = (board.D1, board.D3, board.D8)`, `DiodeOrientation.COL2ROW`.
 - `kmk/scanners/digitalio.py:45-47`: with `COL2ROW`, **cols are diode anodes and rows are cathodes**.
@@ -56,7 +56,7 @@ the standard 6-key report that's unnecessary, and NKRO is less compatible with s
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Syntax | `python3 -m py_compile /Users/ysabhiram/Desktop/Personal_Projects/rp2040/boot.py` | exit 0 |
+| Syntax | `python3 -m py_compile ~/Desktop/Personal_Projects/rp2040/boot.py` | exit 0 |
 | Drive visible (human) | `ls /Volumes/CIRCUITPY` | lists `code.py` etc. when the drive is enabled |
 
 ## Scope
