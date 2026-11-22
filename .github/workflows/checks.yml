@@ -1,0 +1,44 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  firmware:
+    name: Firmware and configurator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Compile firmware files
+        run: python3 -m py_compile boot.py code.py config_loader.py layer_led.py macropad_display.py
+      - name: Validate keymap.json
+        run: python3 -m json.tool keymap.json > /dev/null
+      - name: Layer switching and loader checks
+        run: python3 checks/check_layer_switch.py
+      - name: Configurator logic checks
+        run: node checks/check_configurator.cjs
+      - name: Studio key names match the firmware
+        if: hashFiles('studio/scripts/key-names.py') != ''
+        run: python3 studio/scripts/key-names.py --check
+
+  studio:
+    name: Mac app tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Show toolchain
+        run: xcrun swift --version
+      - name: Swift tests
+        if: hashFiles('studio/Package.swift') != ''
+        run: xcrun swift test --package-path studio

@@ -6,12 +6,14 @@
 
 XIAO RP2040 · CircuitPython · KMK · Macropad Studio
 
-[Get started](#get-started) · [Native Studio](#macropad-studio--porcelain) · [Architecture](#how-it-works) · [Hardware](#the-pad) · [Plans](plans/README.md)
+[![checks](https://github.com/AbhiramYanamandra/macropad/actions/workflows/checks.yml/badge.svg)](https://github.com/AbhiramYanamandra/macropad/actions/workflows/checks.yml)
+
+[Get started](#get-started) · [Native Studio](#macropad-studio--porcelain) · [Architecture](#how-it-works) · [Hardware](#the-pad) · [How work happens](#how-work-happens) · [Issues](https://github.com/AbhiramYanamandra/macropad/issues)
 
 ![Macropad Studio: Porcelain native editor showing the real CODE layer](docs/images/studio-keys.png)
 
 *The native editor, rendered with this repository’s keymap. Slice 1 is built;
-its on-pad checks are pending.*
+its on-pad check is [issue #3](https://github.com/AbhiramYanamandra/macropad/issues/3).*
 
 </div>
 
@@ -170,7 +172,9 @@ Positions 1–9 match the keys that typed `1`–`9` in the original firmware.
 | [`keymap.json`](keymap.json) | Current three-layer layout |
 | [`configurator/`](configurator/) | Browser editor and shared file-format documentation |
 | [`studio/`](studio/) | Native Porcelain editor and mock-pad tests |
-| [`plans/`](plans/README.md) | Status, design decisions and remaining device checks |
+| [`plans/`](plans/README.md) | Detailed plans and design decisions that issues link to |
+| [`checks/`](checks/) | Host checks for the loader and configurator, run by CI |
+| [`.github/`](.github/) | CI workflow, pull request template and Task issue form |
 
 ### Local KMK patch
 
@@ -188,6 +192,25 @@ plugging in to reach the `RPI-RP2` bootloader and reflash CircuitPython.
 The pre-configurator `code.py` is preserved at Git tag `baseline-2026-11-14`.
 Recover a prior file deliberately after reviewing the diff; keep a copy of your
 current layout before replacing it.
+
+## How work happens
+
+This project follows the [KAREN OS engineering standard](https://github.com/AbhiramYanamandra/karen-os/blob/main/docs/organisation/engineering.md).
+
+```mermaid
+flowchart LR
+    I["Issue<br/>status:ready"] --> B["Agent branch<br/>type/issue-description"]
+    B --> P["Pull request<br/>Closes #N"]
+    P --> CI{{"CI: firmware,<br/>configurator, Mac app"}}
+    CI -->|pass| R{{"Owner review<br/>and pad test"}}
+    R -->|merge| M["main"]
+```
+
+- **[Issues](https://github.com/AbhiramYanamandra/macropad/issues) are the work queue.** Priority labels `P0` to `P3` set the order, and only `status:ready` issues get picked up. Pad tests carry the `hardware-check` label.
+- **Every change is a pull request** from a `<type>/<issue>-<short-description>` branch. `main` is protected: it needs a pull request and passing CI, and only the owner merges.
+- **CI** ([`checks.yml`](.github/workflows/checks.yml)) compiles the firmware, validates `keymap.json`, runs the loader and configurator checks on Linux, and runs the Mac app's Swift tests on macOS.
+- **Agents never write to the pad** or change `kmk/`. Physical checks are listed in the pull request for the owner to run.
+- Agent rules are in [`AGENTS.md`](AGENTS.md). Detailed multi-step work keeps a plan in [`plans/`](plans/README.md).
 
 ## Licences
 

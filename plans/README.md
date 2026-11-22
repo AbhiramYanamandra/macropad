@@ -1,5 +1,10 @@
 # Implementation Plans
 
+> **Tracking moved to GitHub issues on 2026-11-23.** Priority, status and discussion
+> now live in the [issues](https://github.com/AbhiramYanamandra/macropad/issues), and
+> every change arrives as a pull request. The plan files below stay as the detailed
+> steps that issues link to. The status column is kept up to date by each PR.
+
 Written by the improve skill on 2026-11-14 for the XIAO RP2040 + KMK macropad
 (3×3 matrix, one rotary encoder, 128×32 SSD1306 OLED, CircuitPython 10.0.0).
 Do them in the order below unless the dependencies say otherwise. Each executor:
@@ -19,13 +24,13 @@ on the Mac, plus a human checklist on the device. Plans can be marked
 |------|-------|----------|--------|------------|--------|
 | [001](001-version-control-and-kmk-patch-record.md) | Git repo, README, record the local KMK patch | P1 | S | — | DONE (git + tag `baseline-2026-11-14` + root `README.md`) |
 | [002](002-tidy-code-py.md) | Tidy `code.py` (dead import, layout, debug switch) | P3 | S | 001 | REJECTED: superseded, `code.py` was rewritten for the configurator |
-| [003](003-real-keymap-with-layers-and-macros.md) | Three-layer keymap (Media / Code / Meet), encoder press cycles layers | P1 | S | 001, 002 | DONE (device check pending): delivered as the default `keymap.json`, editable in Macropad Studio |
-| [004](004-per-layer-oled-art.md) | Per-layer OLED image + wake screen on layer change | P2 | S | 003 | DONE (device check pending): `macropad_display.py` `LayerDisplay` |
-| [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | DONE (device check pending; `lib/neopixel.mpy` still needed): `layer_led.py` |
-| [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz |
-| [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | BLOCKED: waits for plan 008's Sync to pad design, because hiding the drive stops the app writing `keymap.json` |
-| [008](008-porcelain-redesign.md) | Rebuild Macropad Studio as the approved Porcelain native Mac app (architecture proposal first, then slices) | P1 | L | 009; approval gate after Step 2 | IN PROGRESS: slice 1 built; Step 4 review/corrections complete ([review](008-slice-1-review.md)); owner visual acceptance and Step 5 pad checks pending |
-| [009](009-layer-switch-without-knob.md) | Keys 7 + 9 cycle layers when the knob is not fitted; `knob` setting; fix combos always jumping to layer 1 | P1 | S | none; run before 008 | DONE (device check pending): merged to main 2026-11-22 after review; host checks pass; still open: configurator Try it check in Chrome and the Step 7 pad checklist |
+| [003](003-real-keymap-with-layers-and-macros.md) | Three-layer keymap (Media / Code / Meet), encoder press cycles layers | P1 | S | 001, 002 | DONE (device check pending): delivered as the default `keymap.json`, editable in Macropad Studio. Issue #5. |
+| [004](004-per-layer-oled-art.md) | Per-layer OLED image + wake screen on layer change | P2 | S | 003 | DONE (device check pending): `macropad_display.py` `LayerDisplay`. Issue #5. |
+| [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | DONE (device check pending; `lib/neopixel.mpy` still needed): `layer_led.py`. Issue #5. |
+| [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz. Issue #5. |
+| [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | BLOCKED: waits for plan 008's Sync to pad design, because hiding the drive stops the app writing `keymap.json`. Issue #10. |
+| [008](008-porcelain-redesign.md) | Rebuild Macropad Studio as the approved Porcelain native Mac app (architecture proposal first, then slices) | P1 | L | 009; approval gate after Step 2 | IN PROGRESS: slice 1 merged to main in PR #1 (2026-11-22). Pad check is issue #3; slices 2 to 5 are issues #6 to #9 |
+| [009](009-layer-switch-without-knob.md) | Keys 7 + 9 cycle layers when the knob is not fitted; `knob` setting; fix combos always jumping to layer 1 | P1 | S | none; run before 008 | DONE (device check pending): merged to main 2026-11-22 after review; host checks pass; still open: configurator Try it check in Chrome and the Step 7 pad checklist. Issue #4. |
 
 Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED (with a one-line reason) | REJECTED (with a one-line reason)
 

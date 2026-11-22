@@ -82,7 +82,7 @@ The knob is a future plan, not a hardware change. The PCB already has routed hea
 
 ## Git workflow
 
-- Branch `pilot/008-porcelain`. One commit per step or slice. The repository is public at `github.com/AbhiramYanamandra/macropad`; push only when the owner asks, and never commit secrets, Wi-Fi details or personal paths.
+- One issue and one pull request per slice (issues #3 and #6 to #9), on a branch named `feat/<issue>-<short-description>` from `main`, following the KAREN OS engineering standard. Never push to `main` or merge; the owner merges after review. Slice 1 was built on `pilot/008-porcelain` and merged in PR #1 before the standard existed.
 
 ## Steps
 
