@@ -1,14 +1,13 @@
 # Macropad (XIAO RP2040 + KMK)
 
-A 9-key macropad with a rotary encoder, a 128×32 OLED and the XIAO's onboard
-RGB LED, running KMK on CircuitPython. What every key does lives in `keymap.json`,
+A 9-key macropad with a 128×32 OLED and the XIAO's onboard RGB LED, running KMK on CircuitPython. What every key does lives in `keymap.json`,
 which you edit with **Macropad Studio**, a G Hub-style app that runs in your browser.
 
 ## Customise it: Macropad Studio
 
 1. Open `configurator/index.html` in **Chrome** (or Edge).
 2. Click **Connect pad…** and choose the `CIRCUITPY` drive.
-3. Click a key, the knob or the screen and pick what it does: shortcuts (or record
+3. Click a key or the screen and pick what it does: shortcuts (or record
    one), media keys, typed text, multi-step macros, layer switching, or a separate
    action when the key is **held**.
 4. **Combos**: press several keys together for another action (e.g. 1 + 3 = lock screen).
@@ -17,6 +16,14 @@ which you edit with **Macropad Studio**, a G Hub-style app that runs in your bro
 6. Click **Save to pad**. CircuitPython restarts and the new layout is live.
 
 Safari and Firefox can't write to the drive. Use **Download keymap.json** and copy it onto `CIRCUITPY`.
+
+## Switching layers and the knob
+
+Press **keys 7 and 9 together** to cycle to the next layer (Media → Code → Meet → Media).
+The PCB has routed headers for a rotary encoder (pins below), but the knob is not fitted
+yet, so `keymap.json` has `"knob": false` and the firmware ignores the encoder. When a
+knob is fitted, turn on **Knob fitted** in Macropad Studio: pressing the knob then cycles
+layers, and 7 + 9 stays as a backup. See `plans/009-layer-switch-without-knob.md`.
 
 ## First-time install of this firmware
 
