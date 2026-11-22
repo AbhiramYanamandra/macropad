@@ -24,6 +24,7 @@ on the Mac, plus a human checklist on the device. Plans can be marked
 | [005](005-onboard-neopixel-layer-indicator.md) | Onboard NeoPixel shows layer color | P3 | S | 003 (needs `lib/neopixel.mpy` from the user) | DONE (device check pending; `lib/neopixel.mpy` still needed): `layer_led.py` |
 | [006](006-oled-status-toasts.md) | OLED text toasts (layer name, `VOL+`/`ZOOM-`) | P3 | M | 004 | DONE (device check pending): toasts for keys and the encoder, I2C at 400 kHz |
 | [007](007-boot-config-hide-drive.md) | `boot.py`: hide drive and serial unless the rescue key is held | P2 | S | 001; run last, user present | TODO |
+| [008](008-porcelain-redesign.md) | Rebuild Macropad Studio as the approved Porcelain native Mac app (architecture proposal first, then slices) | P1 | L | none for Steps 1-2; approval gate after Step 2 | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | DONE (device check pending) | BLOCKED (with a one-line reason) | REJECTED (with a one-line reason)
 
