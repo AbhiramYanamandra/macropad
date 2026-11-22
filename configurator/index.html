@@ -215,7 +215,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
           <div class="led" id="led" title="Onboard NeoPixel: shows the layer color"></div>
           <div class="dtop">
             <div class="oled" id="oled" title="OLED 128×32: click to edit this layer's screen"><canvas id="oledCanvas" width="512" height="128"></canvas><div class="tag">OLED 128×32</div></div>
-            <div class="knobwrap">
+            <div class="knobwrap" aria-label="Encoder controls">
+              <div id="knobState" class="small muted" style="position:absolute;top:-10px;white-space:nowrap"></div>
               <div class="knob" id="knob" title="Knob press"></div>
               <button class="kz ccw" id="kccw" title="Turn left">↺</button>
               <button class="kz cw" id="kcw" title="Turn right">↻</button>
@@ -244,7 +245,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <script>
 'use strict';
 /* ================= data ================= */
-const DEFAULT_CONFIG = {"version": 1, "settings": {"hold_ms": 220, "combo_timeout": 80, "toast_ms": 1200, "led_brightness": 0.05, "dim_s": 20, "off_s": 60}, "layers": [{"name": "MEDIA", "image": "lib/manandmountain.bmp", "color": "#0050ff", "keys": [{"type": "key", "key": "MPRV", "label": "PREV"}, {"type": "key", "key": "MPLY", "label": "PLAY", "hold": {"type": "key", "key": "MUTE", "label": "MUTE"}}, {"type": "key", "key": "MNXT", "label": "NEXT"}, {"type": "key", "key": "C", "label": "COPY", "mods": ["LCMD"]}, {"type": "key", "key": "V", "label": "PASTE", "mods": ["LCMD"]}, {"type": "key", "key": "MUTE", "label": "MUTE"}, {"type": "key", "key": "N4", "label": "SNIP", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "UP", "label": "MISSION", "mods": ["LCTL"]}, {"type": "key", "key": "SPC", "label": "SEARCH", "mods": ["LCMD"]}], "encoder": {"ccw": {"type": "key", "key": "VOLD", "label": "VOL-"}, "cw": {"type": "key", "key": "VOLU", "label": "VOL+"}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}, {"name": "CODE", "image": "lib/goku.bmp", "color": "#00ff40", "keys": [{"type": "key", "key": "P", "label": "OPEN", "mods": ["LCMD"]}, {"type": "key", "key": "P", "label": "CMDS", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "SLSH", "label": "COMMENT", "mods": ["LCMD"]}, {"type": "key", "key": "B", "label": "SIDEBAR", "mods": ["LCMD"]}, {"type": "key", "key": "GRV", "label": "TERM", "mods": ["LCTL"]}, {"type": "key", "key": "S", "label": "SAVE", "mods": ["LCMD"]}, {"type": "key", "key": "F5", "label": "DEBUG"}, {"type": "key", "key": "F", "label": "FIND ALL", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "Z", "label": "REDO", "mods": ["LCMD", "LSFT"]}], "encoder": {"ccw": {"type": "key", "key": "MINS", "label": "ZOOM-", "mods": ["LCMD"]}, "cw": {"type": "key", "key": "EQL", "label": "ZOOM+", "mods": ["LCMD"]}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}, {"name": "MEET", "image": "lib/turbulence.bmp", "color": "#ff2020", "keys": [{"type": "key", "key": "A", "label": "MUTE", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "V", "label": "VIDEO", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "S", "label": "SHARE", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "Y", "label": "HAND", "mods": ["LALT"]}, {"type": "key", "key": "H", "label": "CHAT", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "W", "label": "CLOSE", "mods": ["LCMD"]}, {"type": "text", "text": "Be right back", "label": "BRB"}, {"type": "text", "text": "Sounds good", "label": "OK"}, {"type": "key", "key": "ESC", "label": "ESC"}], "encoder": {"ccw": {"type": "key", "key": "VOLD", "label": "VOL-"}, "cw": {"type": "key", "key": "VOLU", "label": "VOL+"}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}], "combos": [{"keys": [0, 2], "action": {"type": "macro", "label": "LOCK", "steps": [{"do": "tap", "key": "Q", "mods": ["LCTL", "LCMD"]}]}}]};
+const DEFAULT_CONFIG = {"version": 1, "settings": {"hold_ms": 220, "combo_timeout": 80, "toast_ms": 1200, "led_brightness": 0.05, "dim_s": 20, "off_s": 60, "knob": false}, "layers": [{"name": "MEDIA", "image": "lib/manandmountain.bmp", "color": "#0050ff", "keys": [{"type": "key", "key": "MPRV", "label": "PREV"}, {"type": "key", "key": "MPLY", "label": "PLAY", "hold": {"type": "key", "key": "MUTE", "label": "MUTE"}}, {"type": "key", "key": "MNXT", "label": "NEXT"}, {"type": "key", "key": "C", "label": "COPY", "mods": ["LCMD"]}, {"type": "key", "key": "V", "label": "PASTE", "mods": ["LCMD"]}, {"type": "key", "key": "MUTE", "label": "MUTE"}, {"type": "key", "key": "N4", "label": "SNIP", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "UP", "label": "MISSION", "mods": ["LCTL"]}, {"type": "key", "key": "SPC", "label": "SEARCH", "mods": ["LCMD"]}], "encoder": {"ccw": {"type": "key", "key": "VOLD", "label": "VOL-"}, "cw": {"type": "key", "key": "VOLU", "label": "VOL+"}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}, {"name": "CODE", "image": "lib/goku.bmp", "color": "#00ff40", "keys": [{"type": "key", "key": "P", "label": "OPEN", "mods": ["LCMD"]}, {"type": "key", "key": "P", "label": "CMDS", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "SLSH", "label": "COMMENT", "mods": ["LCMD"]}, {"type": "key", "key": "B", "label": "SIDEBAR", "mods": ["LCMD"]}, {"type": "key", "key": "GRV", "label": "TERM", "mods": ["LCTL"]}, {"type": "key", "key": "S", "label": "SAVE", "mods": ["LCMD"]}, {"type": "key", "key": "F5", "label": "DEBUG"}, {"type": "key", "key": "F", "label": "FIND ALL", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "Z", "label": "REDO", "mods": ["LCMD", "LSFT"]}], "encoder": {"ccw": {"type": "key", "key": "MINS", "label": "ZOOM-", "mods": ["LCMD"]}, "cw": {"type": "key", "key": "EQL", "label": "ZOOM+", "mods": ["LCMD"]}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}, {"name": "MEET", "image": "lib/turbulence.bmp", "color": "#ff2020", "keys": [{"type": "key", "key": "A", "label": "MUTE", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "V", "label": "VIDEO", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "S", "label": "SHARE", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "Y", "label": "HAND", "mods": ["LALT"]}, {"type": "key", "key": "H", "label": "CHAT", "mods": ["LCMD", "LSFT"]}, {"type": "key", "key": "W", "label": "CLOSE", "mods": ["LCMD"]}, {"type": "text", "text": "Be right back", "label": "BRB"}, {"type": "text", "text": "Sounds good", "label": "OK"}, {"type": "key", "key": "ESC", "label": "ESC"}], "encoder": {"ccw": {"type": "key", "key": "VOLD", "label": "VOL-"}, "cw": {"type": "key", "key": "VOLU", "label": "VOL+"}, "press": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}}], "combos": [{"keys": [0, 2], "action": {"type": "macro", "label": "LOCK", "steps": [{"do": "tap", "key": "Q", "mods": ["LCTL", "LCMD"]}]}}, {"keys": [6, 8], "action": {"type": "layer", "mode": "to", "layer": "next", "label": "NEXT LYR"}}]};
 const DEFAULT_IMAGES = {"lib/manandmountain.bmp": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAMAAAAAAAD/AAAAAAAAAAAD//GGAAAD//gAAAAAAAAAA//x////D////8AAAAAAAAP/8f/////////8AAAAAAAD//H//////////gAAAAAAA//gf/////////8AAAAAAAP/4H//////////AAAAAAAD/+D//////////4AAAAAAA//x///////////AAAAAAAP/+f//////////4AAAAAAD//n//////////+AAAAAAA//////////////4AAAAAAP/////////////+AAAAAAD//////////////wAAAAAA//////////////+AAAAAAP//////////////wAAAAAD//////////////+AAAAAB///////////////wAAAAB///////////////+AAAAA////////////////wAAAAf///////////////+AAAAH////////////////wAAAD/////////////////AAAB/////////////////4AAD/////////////////8AAP//////////////////AAP//////////////////4AP///////////////////AH///////////////////8f///", "lib/goku.bmp": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAeP+AAAAAAAAB/gAAAAAAAH//gAAAAAAAAA4AAAAAAAAH8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAAAP8B///wAAAAAAAAAAAAAAH/4P8P//AAAAAAAAAAHgAP///+AfBweAAAAAAAAB/+H//////wf/gAAAAAAAAD//////////j/8AAAAAAAAB/////w////j/gAAAAAAAAf//////////+AAAAAAAAAHh//////////+AAAAAAAAAAf//////////gAAAAAAAAAAf////////h4AAAAAAAAAAAf8P/////4AAAAAAAAAAAAAAAB/wD/+AAAAAAAAAAAAAAAAA8AB/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "lib/turbulence.bmp": "data:image/bmp;base64,Qk2CAgAAAAAAAIIAAABsAAAAgAAAACAAAAABAAEAAAAAAAACAAAAAAAAAAAAAAIAAAACAAAAAAD/AAD/AAD/AAAAAAAA/0JHUnMAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA////AP/8AAAAAAAAGAAAH/AAAED//wAgAECAAMAAAAAAAAAA//AAIAAAAAAAAAAAAAAAAP//wAAAAAAAAAAAAAAAAAD//8AAAAAAAADABAAAAAAD///wAAAAAAAAAgAAAAAAAf//FgAACAAAAAAAAAAAAAD///8AAAAAAAAAAAAAAAAA//9wAAAAAAAQAAAAAAAAAP//9AAAAAAAAf+QwAAAAAD//4AAAAAAAAH/AAAAAAAA//AAABYAAAAPAAAAAAAAAP//xgD/AAAAHEAAAEACgwD//gAH/8AAABABgAAAAgCA//wAB//gAABgAYAAAAAAgP/AAAfh8AADgAHwAAAAAKD/4AAHwfAAAAAAQAAAAABg//gAA//AAAAAAJgAAgAAPP/4AAv/AAAAAAGEAgQAAA7/+AAH/AAAwAABgQCCAAAM//+AAfIAADgAxgDAEAAACv//wAAyQAAP+/SA4AAAAAD///9/vsQAEf/UADgAAAAA//+wAAAAAAAAAAAAgAAAAP/+6AAAAAAAAAAAAAAAAAD/4GgAAAAAAAAAAAAIAAAI//AAAAAAAAAA/+1gCAAAAP9gAAAAAAAAAP/3AAAAAAD//rAAEAAAAAB/oAAAAAAA//4AAAAAAAAAAAAAAAAAAP4AAAAAAAAAAAAAAAAAAAD//+8AAAAAAAAAAAAAAAAA"};
 
 const MODS = [
@@ -339,7 +340,7 @@ function initState(){
 }
 function normalize(cfg){
   cfg.version = 1;
-  cfg.settings = Object.assign({hold_ms:220, combo_timeout:80, toast_ms:1200, led_brightness:0.05, dim_s:20, off_s:60}, cfg.settings||{});
+  cfg.settings = Object.assign({knob:false, hold_ms:220, combo_timeout:80, toast_ms:1200, led_brightness:0.05, dim_s:20, off_s:60}, cfg.settings||{});
   cfg.layers = (cfg.layers||[]).slice(0,8);
   if (!cfg.layers.length) cfg.layers.push(blankLayer('LAYER 1'));
   for (const L of cfg.layers){
@@ -350,13 +351,21 @@ function normalize(cfg){
     L.name = asciiOnly(L.name || 'LAYER').toUpperCase().slice(0,10);
   }
   cfg.combos = (cfg.combos||[]).filter(c => c && Array.isArray(c.keys));
+  ensureLayerCombo(cfg);
   return cfg;
+}
+function ensureLayerCombo(cfg){
+  const switchesLayer = a => !!a && (a.type==='layer' || switchesLayer(a.hold));
+  const hasSwitch = cfg.layers.some(L => L.keys.some(switchesLayer)) || cfg.combos.some(c => switchesLayer(c.action));
+  if (!cfg.settings.knob && !hasSwitch && !cfg.combos.some(c => [...c.keys].sort((a,b)=>a-b).join(',')==='6,8')){
+    cfg.combos.push({keys:[6,8], action:{type:'layer', mode:'to', layer:'next', label:'NEXT LYR'}});
+  }
 }
 function blankLayer(name){
   return {name, image:null, color:'#7c5cff', keys:Array.from({length:9}, () => ({type:'none'})),
     encoder:{ccw:sc('VOLD',[],'VOL-'), cw:sc('VOLU',[],'VOL+'), press:{type:'layer', mode:'to', layer:'next', label:'NEXT LYR'}}};
 }
-function persist(){ S.dirty = true; store('macropad.draft', {cfg:S.cfg, dirty:true}); }
+function persist(){ ensureLayerCombo(S.cfg); S.dirty = true; store('macropad.draft', {cfg:S.cfg, dirty:true}); }
 function changed(){ persist(); renderAll(); }
 function changedQuiet(){ persist(); renderDevice(); renderLists(); renderHeader(); }
 
@@ -461,7 +470,7 @@ function renderLists(){
       <span class="nm">${esc(L.name)}</span>
       <canvas class="thumb" width="128" height="32" data-thumb="${i}"></canvas>
       <span class="idx">${i+1}</span>
-    </div>`).join('') + `<div class="small faint" style="margin-top:6px">Press the knob (or any “layer” key) to move between layers.</div>`;
+    </div>`).join('') + `<div class="small faint" style="margin-top:6px">Press keys 7 + 9 (or your configured layer switch) to move between layers.</div>`;
   ll.querySelectorAll('[data-thumb]').forEach(cv => paintBits(cv, oledBits(+cv.dataset.thumb, null)));
   ll.querySelectorAll('[data-layer]').forEach(el => el.onclick = () => setLayer(+el.dataset.layer));
 
@@ -511,6 +520,7 @@ function renderDevice(){
   const col = L.color || '#000';
   const led = $('#led'); led.style.background = col; led.style.boxShadow = `0 0 10px 2px ${col}, 0 0 26px 6px ${col}66`;
   led.classList.toggle('sel', layerSel);
+  $('#knobState').textContent = S.cfg.settings.knob ? 'Knob · fitted' : 'Knob · not fitted';
   const encSel = S.mode==='edit' && S.sel.kind==='enc' && !S.pick;
   $('#knob').classList.toggle('sel', encSel && S.encPart==='press');
   $('#kccw').classList.toggle('sel', encSel && S.encPart==='ccw');
@@ -533,7 +543,7 @@ function setLayer(i){
 function slotTarget(){
   const L = curL();
   if (S.sel.kind==='key') return {get:()=>L.keys[S.sel.i], set:v=>L.keys[S.sel.i]=v, allowHold:true, title:'Key '+(S.sel.i+1), sub:`on ${L.name}`};
-  if (S.sel.kind==='enc') return {get:()=>L.encoder[S.encPart], set:v=>L.encoder[S.encPart]=v, allowHold:false, title:'Knob', sub:`on ${L.name}`};
+  if (S.sel.kind==='enc') return {get:()=>L.encoder[S.encPart], set:v=>L.encoder[S.encPart]=v, allowHold:false, title:S.cfg.settings.knob?'Knob':'Knob · not fitted', sub:`on ${L.name}`};
   if (S.sel.kind==='combo'){ const c = S.cfg.combos[S.sel.i]; return c && {get:()=>c.action, set:v=>c.action=v, allowHold:false, title:'Combo '+(S.sel.i+1), sub:'keys '+c.keys.map(k=>k+1).join(' + ')+' · every layer'}; }
   return null;
 }
@@ -816,7 +826,7 @@ function fire(a, src, {release=false}={}){
   const before = activeLayer();
   if (!a || a.type==='none'){ if (!release) logLine(src, a); return; }
   if (a.type==='layer'){
-    const tgt = resolveTarget(a.layer, release ? (sim.base) : before);
+    const tgt = resolveTarget(a.layer ?? 'next', before);
     if (a.mode==='mo'){ sim.mo = release ? null : tgt; }
     else if (!release && a.mode==='tg'){ sim.tog = sim.tog===tgt ? null : tgt; }
     else if (!release){ sim.base = tgt; sim.tog = null; sim.mo = null; }
@@ -862,6 +872,7 @@ function simUp(i){
   renderDevice();
 }
 function encoder(part){
+  if (!S.cfg.settings.knob) return;
   const enc = S.cfg.layers[activeLayer()].encoder;
   if (part==='press'){ const k = $('#knob'); k.classList.add('pressed'); setTimeout(()=>k.classList.remove('pressed'),140); }
   else sim.knobAngle += part==='cw' ? 24 : -24;
@@ -1009,6 +1020,7 @@ function openSettings(){
   const units = {hold_ms:' ms', combo_timeout:' ms', toast_ms:' ms', led_brightness:'', dim_s:' s', off_s:' s'};
   const field = (k, label, min, max, step) => `<div><label class="f">${label}</label><div class="row"><input type="range" min="${min}" max="${max}" step="${step}" value="${s[k]}" data-set="${k}"><span class="kchip" style="min-width:70px;text-align:center" data-val="${k}">${s[k]}${units[k]}</span></div></div>`;
   root.innerHTML = `<div class="modal-bg"><div class="modal"><div class="ph"><h3>Settings</h3><button class="btn sm ghost" id="sx">✕</button></div><div class="pb stack">
+    <label class="row"><input type="checkbox" id="sknob" ${s.knob?'checked':''}> Knob fitted</label>
     ${field('hold_ms','Hold time: how long counts as a hold',120,600,10)}
     ${field('combo_timeout','Combo window: keys pressed together',30,250,5)}
     ${field('toast_ms','Screen label stays for',0,3000,100)}
@@ -1017,6 +1029,7 @@ function openSettings(){
     ${field('off_s','Screen turns off after',10,600,10)}
     <div class="section row"><button class="btn danger" id="sreset">Reset to the default layout</button><span class="spacer"></span><button class="btn primary" id="sdone">Done</button></div></div></div></div>`;
   root.querySelectorAll('[data-set]').forEach(r => r.oninput = () => { const k=r.dataset.set; s[k] = +r.value; root.querySelector(`[data-val="${k}"]`).textContent = r.value + units[k]; persist(); renderHeader(); });
+  $('#sknob').onchange = e => { s.knob = e.target.checked; persist(); };
   const close = () => { root.innerHTML=''; renderAll(); };
   $('#sx').onclick = close; $('#sdone').onclick = close;
   $('#sreset').onclick = () => { if (!confirm('Replace every layer, key and combo with the default layout?')) return; S.cfg = normalize(clone(DEFAULT_CONFIG)); S.layer=0; S.sel={kind:'key',i:0}; root.innerHTML=''; changed(); };

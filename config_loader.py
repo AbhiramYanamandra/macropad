@@ -7,12 +7,31 @@ build() runs, because KC.MACRO / KC.TO / KC.HT / KC.VOLU only exist after that.
 
 import json
 
-from kmk.keys import KC
-from kmk.modules.macros import Delay, Press, Release, Tap
-
 KEY_COUNT = 9
 MAX_LAYERS = 8
 MOD_NAMES = ('LCTL', 'LSFT', 'LALT', 'LCMD', 'RCTL', 'RSFT', 'RALT', 'RCMD')
+
+DEFAULT_LAYER_COMBO = {
+    'keys': [6, 8],
+    'action': {'type': 'layer', 'mode': 'to', 'layer': 'next', 'label': 'NEXT LYR'},
+}
+
+
+def has_layer_action(spec):
+    return bool(spec) and (
+        spec.get('type') == 'layer' or has_layer_action(spec.get('hold'))
+    )
+
+
+def cycling_key(direction, layer_count):
+    from kmk.keys import KC, Key
+
+    def press(key, keyboard, *args, **kwargs):
+        target = (keyboard.active_layers[0] + direction) % layer_count
+        KC.TO(target).on_press(keyboard)
+
+    return Key(on_press=press)
+
 
 # Used when keymap.json is missing or broken, so the pad is never dead.
 FALLBACK = {
@@ -61,6 +80,8 @@ class Builder:
             raise ConfigError('need 1-%d layers' % MAX_LAYERS)
 
     def key(self, name):
+        from kmk.keys import KC
+
         found = KC.get(name)
         # KMK returns KC.NO for unknown names instead of raising
         if found is None or (found is KC.NO and name not in ('NO', 'XXXXXXX')):
@@ -77,6 +98,8 @@ class Builder:
 
     def layer_target(self, target, here):
         n = len(self.layers)
+        if here is None:
+            here = 0
         if target == 'next':
             return (here + 1) % n
         if target == 'prev':
@@ -87,6 +110,8 @@ class Builder:
         return target
 
     def macro_step(self, step):
+        from kmk.modules.macros import Delay, Press, Release, Tap
+
         kind = step.get('do')
         if kind == 'tap':
             return Tap(self.chord(step))
@@ -101,6 +126,8 @@ class Builder:
         raise ConfigError('bad macro step ' + str(kind))
 
     def action(self, spec, here):
+        from kmk.keys import KC
+
         if not spec:
             return KC.NO
         kind = spec.get('type', 'none')
@@ -114,12 +141,15 @@ class Builder:
             steps = [self.macro_step(s) for s in spec.get('steps', [])]
             result = KC.MACRO(*steps) if steps else KC.NO
         elif kind == 'layer':
-            target = self.layer_target(spec.get('layer', 'next'), here)
+            target = spec.get('layer', 'next')
             mode = spec.get('mode', 'to')
             makers = {'to': KC.TO, 'mo': KC.MO, 'tg': KC.TG, 'df': KC.DF}
             if mode not in makers:
                 raise ConfigError('bad layer mode ' + str(mode))
-            result = makers[mode](target)
+            if mode == 'to' and target in ('next', 'prev'):
+                result = cycling_key(1 if target == 'next' else -1, len(self.layers))
+            else:
+                result = makers[mode](self.layer_target(target, here))
         else:
             raise ConfigError('bad action type ' + str(kind))
 
@@ -133,6 +163,7 @@ class Builder:
         return result
 
     def build(self):
+        knob = bool(self.settings.get('knob', False))
         keymap, encoder_map = [], []
         key_labels, encoder_labels = [], []
         names, images, colors = [], [], []
@@ -162,8 +193,19 @@ class Builder:
             images.append(layer.get('image') or None)
             colors.append(parse_color(layer.get('color')))
 
+        combo_specs = list(self.cfg.get('combos', []))
+        layer_switch = any(
+            has_layer_action(k) for layer in self.layers for k in layer.get('keys', [])
+        ) or any(has_layer_action(c.get('action')) for c in combo_specs)
+        if (
+            not knob
+            and not layer_switch
+            and not any(sorted(c.get('keys', [])) == [6, 8] for c in combo_specs)
+        ):
+            combo_specs.append(DEFAULT_LAYER_COMBO)
+
         combos = []
-        for c in self.cfg.get('combos', []):
+        for c in combo_specs:
             coords = tuple(int(x) for x in c.get('keys', []))
             if len(coords) < 2 or len(set(coords)) != len(coords):
                 raise ConfigError('combo needs 2+ different keys')
@@ -172,12 +214,13 @@ class Builder:
             combos.append(
                 {
                     'coords': coords,
-                    'key': self.action(c.get('action'), 0),
+                    'key': self.action(c.get('action'), None),
                     'label': (c.get('action') or {}).get('label', ''),
                 }
             )
 
         return {
+            'knob': knob,
             'keymap': keymap,
             'encoder_map': encoder_map,
             'key_labels': key_labels,

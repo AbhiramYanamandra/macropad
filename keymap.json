@@ -6,7 +6,8 @@
     "toast_ms": 1200,
     "led_brightness": 0.05,
     "dim_s": 20,
-    "off_s": 60
+    "off_s": 60,
+    "knob": false
   },
   "layers": [
     {
@@ -315,6 +316,18 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "keys": [
+        6,
+        8
+      ],
+      "action": {
+        "type": "layer",
+        "mode": "to",
+        "layer": "next",
+        "label": "NEXT LYR"
       }
     }
   ]

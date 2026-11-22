@@ -156,12 +156,12 @@ Adapt only the import line if the loader must be imported differently on the hos
 
 ## Done criteria
 
-- [ ] All files compile, and `keymap.json` is valid JSON with `"knob": false` and the `[6, 8]` combo
-- [ ] Combos with `"next"` cycle from the current layer
-- [ ] No encoder module is created when `knob` is false
+- [x] All files compile, and `keymap.json` is valid JSON with `"knob": false` and the `[6, 8]` combo
+- [x] Combos with `"next"` cycle from the current layer (real KMK key handlers on host; pad verification pending)
+- [x] No encoder module is created when `knob` is false (all handler references guarded)
 - [ ] The configurator has the toggle, and its simulator cycles correctly
-- [ ] `git diff --stat -- kmk/` → empty
-- [ ] `plans/README.md` row updated, and plans 003 to 006 device-check notes updated if Step 7 passed
+- [x] `git diff --stat -- kmk/` → empty
+- [x] `plans/README.md` row updated; plans 003 to 006 unchanged because Step 7 has not run
 
 ## STOP conditions
 
@@ -174,3 +174,38 @@ Adapt only the import line if the loader must be imported differently on the hos
 
 - When the knob is fitted: set "Knob fitted" on in the configurator and save. The knob press then cycles layers. The 7 + 9 combo stays as a backup until removed in the configurator.
 - Plan 008's app must show the same toggle in Porcelain's "Knob · not fitted" row and keep these semantics.
+
+## Execution handoff — 2026-11-22T12:46:40Z
+
+- Owner authorised this plan through Step 6 and its local Git workflow, explicitly
+  excluding Step 7: "Do everything except the on-device checklist in Step 7,
+  then stop and tell me what to test on the pad."
+- Approved plan SHA-256 before execution notes/checkmarks:
+  `e1b23087124a865687e3568061e7704d043e1abb666924d29f543c27916b27f9`.
+  Shared context `personal-first-1` returned project OK with no warnings.
+- Codex executed alone on `fix/009-layer-switch-without-knob`, starting from
+  `6074d52` with a clean working tree. The drift command against `90a66e4`
+  returned empty; both required source patterns matched. Small reversible
+  local fix with owner-specified behaviour; no new UX design decision,
+  permission change, external data destination or added spend.
+- Firmware, JSON, format notes and configurator updated. Relative `to` actions
+  delegate to KMK's existing `TO` handler at press time. `kmk/` is unchanged.
+  The existing static Porcelain mockup already says "Knob · not fitted";
+  plan 008's app remains out of scope.
+- Passed: the four-file `py_compile`, `json.tool`,
+  `python3 checks/check_layer_switch.py`, `node checks/check_configurator.cjs`,
+  an AST check that every encoder handler reference is guarded, and
+  `git diff --check`. The loader check includes Step 5 with only its import
+  adapted to `host_config_loader`; that adapter stubs hardware/time/scheduling
+  and registers actual KMK keys. No macro scheduling or USB execution is tested.
+- JavaScript checks execute the actual app script with rendering stubbed:
+  defaults, settings toggle, repeated 7 + 9 cycles, individual keys, lock combo,
+  missing-knob compatibility and exported JSON pass. A separate diff review
+  checked scope, fallback conditions and the existing display/LED observers.
+- Chrome visibly loaded the page with "Knob · not fitted" and the 7 + 9 combo.
+  Browser connector unavailable; native file-picker automation did not complete
+  the import. Full Chrome import/toggle/Try it/export interaction remains
+  unverified. No firmware was deployed and Step 7 was not attempted.
+- Execution claim released at this handoff. Next: finish the Chrome checks in
+  Step 6, then have the owner perform Step 7. Keep plans 003–006 device checks
+  pending until real pad results are available. No remote or external writes.

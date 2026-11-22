@@ -32,16 +32,12 @@ combos = Combos()
 layers = Layers()
 holdtap = HoldTap()
 macros = Macros()
-encoder_handler = ToastEncoderHandler()
-encoder_handler.pins = ((board.D10, board.D7, board.D6),)  # (A, B, button)
 
 # ---- Load keymap.json --------------------------------------------------
 cfg, config_error = config_loader.load()
 settings = cfg['settings']
 
 kbd.keymap = cfg['keymap']
-encoder_handler.map = cfg['encoder_map']
-encoder_handler.labels = cfg['encoder_labels']
 combos.combos = [
     Chord(
         c['coords'],
@@ -78,7 +74,6 @@ display_ext = LayerDisplay(
     off_time=int(settings.get('off_s', 60)),
 )
 kbd.extensions.append(display_ext)
-encoder_handler.toast_display = display_ext
 
 # ---- Module order matters: toasts see raw presses, combos run early ----
 kbd.modules = [
@@ -87,8 +82,15 @@ kbd.modules = [
     layers,
     holdtap,
     macros,
-    encoder_handler,
 ]
+
+if cfg['knob']:
+    encoder_handler = ToastEncoderHandler()
+    encoder_handler.pins = ((board.D10, board.D7, board.D6),)  # (A, B, button)
+    encoder_handler.map = cfg['encoder_map']
+    encoder_handler.labels = cfg['encoder_labels']
+    encoder_handler.toast_display = display_ext
+    kbd.modules.append(encoder_handler)
 
 try:
     from layer_led import LayerLed
